@@ -1,0 +1,26 @@
+{
+  "name": "naechoejongki",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test:predict": "node --experimental-strip-types scripts/predict-sample.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.118.0",
+    "@tosspayments/tosspayments-sdk": "2.10.0",
+    "next": "16.4.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "server-only": "0.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "typescript": "5.9.3"
+  },
+  "type": "module"
+}
