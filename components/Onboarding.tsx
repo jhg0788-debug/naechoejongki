@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Shell } from "./Shell";
 import { captureSource, currentSrc, sessionId, track } from "@/lib/track";
 import { ageInYears } from "@/lib/predict";
@@ -11,8 +12,14 @@ interface S {
   sex: Sex | null; by: number | null; bm: number | null; consent: boolean;
   h: number | null; w: number | null; dad: number | null; mom: number | null; last: number | null;
   pub: number | null; sleep: number | null; ex: number | null; milk: number | null;
+  guardianId: string | null;
 }
-const EMPTY: S = { sex: null, by: null, bm: null, consent: false, h: null, w: null, dad: null, mom: null, last: null, pub: null, sleep: null, ex: null, milk: null };
+const EMPTY: S = { sex: null, by: null, bm: null, consent: false, h: null, w: null, dad: null, mom: null, last: null, pub: null, sleep: null, ex: null, milk: null, guardianId: null };
+
+const PORTONE_STORE = process.env.NEXT_PUBLIC_PORTONE_STORE_ID || "";
+const PORTONE_CHANNEL = process.env.NEXT_PUBLIC_PORTONE_IDV_CHANNEL_KEY || "";
+const GUARDIAN_IDV = !!(PORTONE_STORE && PORTONE_CHANNEL);
+const K_RESUME = "nk_ob_resume";
 
 type NumKey = "h" | "w" | "dad" | "mom" | "last";
 interface NumStep { id: NumKey; q: string; why: string; unit: string; min: number; max: number; step: number; def: (s: S) => number; skip?: boolean }
@@ -36,12 +43,65 @@ export default function Onboarding() {
   const now = useMemo(() => new Date(), []);
   const age = s.by && s.bm ? ageInYears(s.by, s.bm, now) : null;
 
+  const [ivBusy, setIvBusy] = useState(false);
+  const [ivErr, setIvErr] = useState("");
+
+  const verifyGuardian = async (identityVerificationId: string, base: S) => {
+    setIvBusy(true); setIvErr("");
+    try {
+      const res = await fetch("/api/guardian", {
+        method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ identityVerificationId, session_id: sessionId() }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(body?.error || "본인인증을 확인하지 못했어요.");
+      setS({ ...base, consent: true, guardianId: identityVerificationId });
+      setCur("h");
+      track("step", { props: { q: "h", guardian: "verified" } });
+    } catch (e: any) {
+      setS(base); setCur("consent");
+      setIvErr(e?.message || "본인인증을 확인하지 못했어요.");
+    } finally { setIvBusy(false); }
+  };
+
+  const startGuardianIdv = async () => {
+    setIvErr("");
+    const identityVerificationId = `nkiv_${crypto.randomUUID()}`;
+    try { sessionStorage.setItem(K_RESUME, JSON.stringify({ s, identityVerificationId })); } catch { /* noop */ }
+    try {
+      const PortOne = await import("@portone/browser-sdk/v2");
+      const r = await PortOne.requestIdentityVerification({
+        storeId: PORTONE_STORE, channelKey: PORTONE_CHANNEL, identityVerificationId,
+        redirectUrl: `${location.origin}/?guardian=1`,
+      });
+      // 데스크톱(팝업)은 여기로 결과가 온다. 모바일은 redirectUrl로 돌아온다.
+      if (!r) return;
+      if (r.code) { setIvErr(r.message || "본인인증이 취소됐어요."); return; }
+      await verifyGuardian(identityVerificationId, s);
+    } catch (e: any) {
+      setIvErr(e?.message || "본인인증 창을 열지 못했어요.");
+    }
+  };
+
   useEffect(() => {
     if (tracked.current) return;
     tracked.current = true;
     captureSource();
+    // 모바일 본인인증 후 돌아온 경우: 입력하던 내용을 복원하고 인증 결과를 확인
+    const q = new URLSearchParams(location.search);
+    if (q.get("guardian") === "1") {
+      let saved: { s: S; identityVerificationId: string } | null = null;
+      try { saved = JSON.parse(sessionStorage.getItem(K_RESUME) || "null"); sessionStorage.removeItem(K_RESUME); } catch { /* noop */ }
+      try { history.replaceState(null, "", location.pathname); } catch { /* noop */ }
+      if (saved?.s) {
+        const id = q.get("identityVerificationId") || saved.identityVerificationId;
+        if (q.get("code")) { setS(saved.s); setCur("consent"); setIvErr(q.get("message") || "본인인증이 취소됐어요."); }
+        else verifyGuardian(id, saved.s);
+        return;
+      }
+    }
     track("landing", { props: { path: location.pathname } });
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const visible = ORDER.filter(id => id !== "consent" || (age != null && age < 14));
   const questions = visible.filter(id => id !== "intro" && id !== "calc");
@@ -69,7 +129,7 @@ export default function Onboarding() {
           method: "POST", headers: { "content-type": "application/json" },
           body: JSON.stringify({
             session_id: sessionId(), src: currentSrc(),
-            sex: s.sex, birthYear: s.by, birthMonth: s.bm, under14Consent: s.consent,
+            sex: s.sex, birthYear: s.by, birthMonth: s.bm, under14Consent: s.consent, guardianVerificationId: s.guardianId,
             height: s.h, weight: s.w, dad: s.dad, mom: s.mom, lastYear: s.last,
             puberty: s.pub, sleep: s.sleep, exercise: s.ex, milk: s.milk,
           }),
@@ -120,12 +180,27 @@ export default function Onboarding() {
       {cur === "consent" && (
         <section className="screen">
           <h2>보호자와 함께 입력해 주세요</h2>
-          <p className="note">만 {Math.floor(age ?? 0)}세는 만 14세 미만이라 보호자 동의가 필요해요. 정식 출시 때는 보호자 휴대폰 본인인증을 받아요.</p>
-          <label className="check">
-            <input type="checkbox" id="consent" checked={s.consent} onChange={e => set({ consent: e.target.checked })} />
-            <span>보호자가 내용을 확인했고, 함께 입력하고 있어요.</span>
-          </label>
-          <div className="actions"><button className="btn" disabled={!s.consent} onClick={() => go(1)}>다음</button></div>
+          <p className="note">만 {Math.floor(age ?? 0)}세는 만 14세 미만이라 개인정보 수집에 보호자 동의가 필요해요.</p>
+          {GUARDIAN_IDV ? (
+            <>
+              <div className="why"><b>어떻게 하나요</b><span>보호자(만 19세 이상) 휴대폰으로 본인인증을 한 번 해요. 이름·전화번호는 저장하지 않고 인증 여부만 확인해요.</span></div>
+              <p className="note">아래 버튼을 누르면 <Link href="/privacy" target="_blank">개인정보처리방침</Link>에 보호자가 동의하는 것으로 봐요.</p>
+              {ivErr ? <p className="err" role="alert">{ivErr}</p> : null}
+              <div className="actions">
+                {s.guardianId
+                  ? <button className="btn" onClick={() => go(1)}>인증 완료 · 다음</button>
+                  : <button className="btn" disabled={ivBusy} onClick={startGuardianIdv}>{ivBusy ? "확인하는 중…" : "보호자 휴대폰 본인인증"}</button>}
+              </div>
+            </>
+          ) : (
+            <>
+              <label className="check">
+                <input type="checkbox" id="consent" checked={s.consent} onChange={e => set({ consent: e.target.checked })} />
+                <span>보호자가 <Link href="/privacy" target="_blank">개인정보처리방침</Link>을 확인했고, 함께 입력하고 있어요.</span>
+              </label>
+              <div className="actions"><button className="btn" disabled={!s.consent} onClick={() => go(1)}>다음</button></div>
+            </>
+          )}
         </section>
       )}
 

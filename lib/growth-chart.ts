@@ -1,14 +1,18 @@
 /**
- * 질병관리청 2017 소아청소년 성장도표 · 신장
+ * 질병관리청 2017 소아청소년 성장도표 · 연령별 신장 (LMS)
  *
- * ⚠️ 프로토타입용 근사값이다. 만 나이별 중앙값(M)과 표준편차(S)를 손으로 넣었다.
- * 출시 전, 질병관리청이 배포하는 LMS 원본(월령별 L·M·S)으로 이 파일만 교체하면 된다.
- * 교체할 때는 refAt()이 같은 모양({M,S} 또는 LMS로 계산한 z)을 돌려주도록 유지한다.
+ * 공식 LMS 표가 lib/growth-chart-lms.json 에 있으면 그것을 쓰고,
+ * 없으면 아래 근사값(만 나이별 M·S, L=1)을 쓴다.
+ * 공식 표 넣는 법: README의 '성장도표 원본 넣기' 참고 (npm run import:chart -- 파일.csv)
  */
-export type Sex = "m" | "f";
+import lms from "./growth-chart-lms.json" with { type: "json" };
 
-// index 0 = 만 5세 … 13 = 만 18세
-const TABLE: Record<Sex, { M: number[]; S: number[] }> = {
+export type Sex = "m" | "f";
+type Row = { m: number; L: number; M: number; S: number }; // m = 월령
+type Table = Record<Sex, Row[]>;
+
+// 근사값: index 0 = 만 5세 … 13 = 만 18세
+const APPROX: Record<Sex, { M: number[]; S: number[] }> = {
   m: {
     M: [110.0, 116.2, 122.1, 127.9, 133.4, 138.8, 144.7, 151.4, 158.6, 165.0, 169.2, 171.4, 172.6, 173.6],
     S: [4.6, 4.9, 5.2, 5.6, 6.0, 6.4, 7.0, 7.6, 7.8, 7.0, 6.2, 5.9, 5.8, 5.8],
@@ -18,24 +22,46 @@ const TABLE: Record<Sex, { M: number[]; S: number[] }> = {
     S: [4.5, 4.8, 5.1, 5.5, 6.0, 6.5, 6.6, 6.0, 5.5, 5.3, 5.2, 5.2, 5.2, 5.2],
   },
 };
+// 근사값의 S는 cm 단위 표준편차라 LMS의 S(변동계수)로 바꿔 넣는다
+const approxTable = (): Table => {
+  const t = { m: [] as Row[], f: [] as Row[] };
+  for (const sex of ["m", "f"] as Sex[])
+    APPROX[sex].M.forEach((M, i) => t[sex].push({ m: (5 + i) * 12, L: 1, M, S: APPROX[sex].S[i] / M }));
+  return t;
+};
+
+const official = lms as unknown as Partial<Table> & { source?: string };
+const TABLE: Table = official.m?.length && official.f?.length ? (official as Table) : approxTable();
+export const CHART_SOURCE = official.m?.length ? (official.source ?? "질병관리청 2017 성장도표 LMS") : "근사값(프로토타입)";
 
 export const CHART_MIN_AGE = 5;
 export const CHART_MAX_AGE = 18;
 
-export function refAt(sex: Sex, age: number): { M: number; S: number } {
-  const a = Math.min(CHART_MAX_AGE, Math.max(CHART_MIN_AGE, age)) - CHART_MIN_AGE;
-  const i = Math.floor(a);
-  const t = a - i;
-  const c = TABLE[sex];
-  if (i >= c.M.length - 1) return { M: c.M[c.M.length - 1], S: c.S[c.S.length - 1] };
-  return { M: c.M[i] + (c.M[i + 1] - c.M[i]) * t, S: c.S[i] + (c.S[i + 1] - c.S[i]) * t };
+function lmsAt(sex: Sex, age: number): { L: number; M: number; S: number } {
+  const months = Math.min(CHART_MAX_AGE, Math.max(CHART_MIN_AGE, age)) * 12;
+  const rows = TABLE[sex];
+  if (months <= rows[0].m) return rows[0];
+  if (months >= rows[rows.length - 1].m) return rows[rows.length - 1];
+  let i = 0;
+  while (i < rows.length - 2 && rows[i + 1].m < months) i++;
+  const a = rows[i], b = rows[i + 1], t = (months - a.m) / (b.m - a.m);
+  return { L: a.L + (b.L - a.L) * t, M: a.M + (b.M - a.M) * t, S: a.S + (b.S - a.S) * t };
 }
 
-/** 백분위 선(z) 위의 키 */
-export const heightAtZ = (sex: Sex, age: number, z: number) => {
-  const r = refAt(sex, age);
-  return r.M + z * r.S;
-};
+/** 키 → z점수 */
+export function zAt(sex: Sex, age: number, height: number): number {
+  const { L, M, S } = lmsAt(sex, age);
+  return Math.abs(L) < 1e-6 ? Math.log(height / M) / S : (Math.pow(height / M, L) - 1) / (L * S);
+}
+
+/** z점수 선 위의 키 */
+export function heightAtZ(sex: Sex, age: number, z: number): number {
+  const { L, M, S } = lmsAt(sex, age);
+  return Math.abs(L) < 1e-6 ? M * Math.exp(S * z) : M * Math.pow(1 + L * S * z, 1 / L);
+}
+
+/** 중앙값 (예측 로직의 성장속도 비교용) */
+export const medianAt = (sex: Sex, age: number) => lmsAt(sex, age).M;
 
 function erf(x: number) {
   const s = Math.sign(x);

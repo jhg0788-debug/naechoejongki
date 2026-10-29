@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Shell } from "./Shell";
 import { GrowthChart } from "./GrowthChart";
 import { share } from "@/lib/share";
-import { captureSource, track } from "@/lib/track";
+import { captureSource, sessionId, track } from "@/lib/track";
 import type { FreeResult, FullResult } from "@/lib/predict";
 
 export interface ReportData {
@@ -107,8 +107,35 @@ export default function ReportView({ report, view, justPaid }: { report: ReportD
         )}
 
         <Link className="btn text" href="/">{view === "parent" ? "다른 자녀도 확인하기" : "처음부터 다시 하기"}</Link>
+        <DeleteReport id={report.id} />
       </section>
     </Shell>
+  );
+}
+
+function DeleteReport({ id }: { id: string }) {
+  const [step, setStep] = useState<"idle" | "confirm" | "busy" | "done">("idle");
+  const [err, setErr] = useState("");
+  const del = async () => {
+    setStep("busy"); setErr("");
+    try {
+      const res = await fetch(`/api/reports/${id}?s=${encodeURIComponent(sessionId())}`, { method: "DELETE" });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(body?.error || "삭제하지 못했어요.");
+      setStep("done");
+    } catch (e: any) { setErr(e?.message || "삭제하지 못했어요."); setStep("confirm"); }
+  };
+  if (step === "done") return <p className="notice" role="status">리포트와 입력한 정보를 삭제했어요. 결제 기록은 법에 따라 5년간 보관돼요.</p>;
+  if (step === "idle") return <button className="btn text" style={{ fontSize: 13 }} onClick={() => setStep("confirm")}>이 리포트 삭제하기</button>;
+  return (
+    <div className="card" style={{ gap: 10 }}>
+      <p className="note">리포트와 입력한 키·생년월 정보가 지워지고 이 링크는 더 이상 열리지 않아요. 결제한 리포트도 다시 볼 수 없어요.</p>
+      {err ? <p className="err" role="alert">{err}</p> : null}
+      <div className="statrow">
+        <button className="btn ghost" onClick={() => setStep("idle")}>취소</button>
+        <button className="btn" disabled={step === "busy"} onClick={del}>{step === "busy" ? "삭제 중…" : "삭제"}</button>
+      </div>
+    </div>
   );
 }
 

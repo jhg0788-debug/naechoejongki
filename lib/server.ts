@@ -39,6 +39,11 @@ export async function logEvent(e: {
   if (error) console.error("[event]", e.name, error.message);
 }
 
+/** 포트원 본인인증 키가 모두 있으면 14세 미만은 보호자 휴대폰 인증을 강제한다 */
+export function guardianVerificationEnabled() {
+  return !!(process.env.PORTONE_API_SECRET && process.env.NEXT_PUBLIC_PORTONE_STORE_ID && process.env.NEXT_PUBLIC_PORTONE_IDV_CHANNEL_KEY);
+}
+
 export function siteUrl() {
   return (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
 }

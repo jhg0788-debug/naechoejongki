@@ -1,4 +1,4 @@
-import { heightAtZ, normCdf, refAt, type Sex } from "./growth-chart.ts";
+import { heightAtZ, medianAt, normCdf, zAt, type Sex } from "./growth-chart.ts";
 
 /**
  * 예측 로직 (기획서 '예측 로직' 그대로)
@@ -79,8 +79,7 @@ export function validate(x: Inputs, now = new Date()): void {
 export function predict(x: Inputs, now = new Date()): FullResult {
   const age = ageInYears(x.birthYear, x.birthMonth, now);
   const mph = x.sex === "m" ? (x.dad + x.mom + 13) / 2 : (x.dad + x.mom - 13) / 2;
-  const r = refAt(x.sex, age);
-  const zNow = (x.height - r.M) / r.S;
+  const zNow = zAt(x.sex, age, x.height);
   const pctPred = heightAtZ(x.sex, 18, zNow);
 
   let w: number = PCT_WEIGHT[x.puberty];
@@ -95,7 +94,7 @@ export function predict(x: Inputs, now = new Date()): FullResult {
   let velocityFlag = false;
   if (x.lastYear != null) {
     const v = x.height - x.lastYear;
-    const expected = r.M - refAt(x.sex, age - 1).M;
+    const expected = medianAt(x.sex, age) - medianAt(x.sex, age - 1);
     if (v > 0 && Math.abs(v - expected) > 2.5) {
       half += 1.5;
       velocityFlag = true;
@@ -113,7 +112,6 @@ export function predict(x: Inputs, now = new Date()): FullResult {
   const score = [0, 1, 2, 3, 3][x.sleep] + x.exercise + x.milk; // 0~9
   const habitPos = 0.2 + 0.6 * (score / 9);
   const habitLabel = habitPos < 0.4 ? "범위 아래쪽" : habitPos > 0.6 ? "범위 위쪽" : "범위 가운데";
-  const r18 = refAt(x.sex, 18);
 
   return {
     lo, hi, peerTopPct, confidence,
@@ -123,7 +121,7 @@ export function predict(x: Inputs, now = new Date()): FullResult {
     pctPred: Math.round(pctPred * 10) / 10,
     remaining: (x.sex === "m" ? REMAIN_M : REMAIN_F)[x.puberty],
     toGo: Math.round((median - x.height) * 10) / 10,
-    zNow, zFinal: (median - r18.M) / r18.S,
+    zNow, zFinal: zAt(x.sex, 18, median),
     habitPos, habitLabel,
     wide: half >= 5, velocityFlag, halfWidth: half,
   };

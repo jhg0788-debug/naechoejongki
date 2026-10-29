@@ -82,6 +82,7 @@ export default function PayWidget({ reportId, clientKey, product, range }: {
           <div id="payment-method" />
           <div id="agreement" />
         </div>
+        <p className="notice">상세 리포트는 결제 즉시 열리는 디지털 콘텐츠라 결제 후에는 단순 변심 환불이 어려워요. 리포트가 안 열리거나 중복 결제된 경우엔 전액 환불돼요. <Link href="/refund" target="_blank">환불정책</Link> · <Link href="/terms" target="_blank">이용약관</Link></p>
         {err ? <p className="err" role="alert">{err}</p> : null}
         <div className="actions">
           <button className="btn" disabled={!ready || busy} onClick={pay}>
