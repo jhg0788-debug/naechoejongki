@@ -1,49 +1,39 @@
 import "server-only";
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-let admin: SupabaseClient | null = null;
+/**
+ * 모든 DB·결제 작업은 Supabase Edge Function `nk-api`가 한다.
+ * 이 앱(Vercel)은 공개 키만 쓰므로 Vercel에 비밀 환경변수가 필요 없다.
+ * (Supabase 공개 키는 브라우저에 노출돼도 되는 키다. 테이블은 RLS로 전부 막혀 있다.)
+ */
+const SUPABASE_URL = process.env.SUPABASE_URL || "https://kltukfalawlrjrfzoyam.supabase.co";
+const PUBLISHABLE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY || "sb_publishable_pEWonwCXK092FG8eVEc_MA_TubdM8Vc";
+const API = `${SUPABASE_URL.replace(/\/$/, "")}/functions/v1/nk-api`;
 
-/** 서버 전용 Supabase 클라이언트 (service role). 브라우저로 절대 내보내지 않는다. */
-export function db(): SupabaseClient {
-  if (admin) return admin;
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) throw new Error("SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY 환경변수가 없습니다.");
-  admin = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
-  return admin;
+export type ApiResult<T = any> = { ok: boolean; status: number; data: T };
+
+export async function api<T = any>(op: string, body: Record<string, unknown> = {}): Promise<ApiResult<T>> {
+  try {
+    const res = await fetch(API, {
+      method: "POST",
+      headers: { "content-type": "application/json", apikey: PUBLISHABLE_KEY },
+      body: JSON.stringify({ op, ...body }),
+      cache: "no-store",
+    });
+    const data = (await res.json().catch(() => ({}))) as T;
+    return { ok: res.ok, status: res.status, data };
+  } catch (e) {
+    console.error("[api]", op, e);
+    return { ok: false, status: 502, data: { error: "서버에 연결하지 못했어요. 잠시 뒤 다시 시도해 주세요." } as T };
+  }
 }
 
-/** 상품 가격은 서버에서만 정한다. 클라이언트가 보낸 금액은 믿지 않는다. */
+/** 가격 표시용 (실제 결제 금액은 nk-api가 정한다) */
 export const PRODUCTS = {
   report_single: { name: "내최종키 상세 리포트", amount: 4900 },
 } as const;
-export type ProductId = keyof typeof PRODUCTS;
 
-/** ?v= 값 정리: 영문·숫자·-·_ 32자 */
-export function cleanSrc(v: unknown): string {
-  const s = typeof v === "string" ? v.trim().toLowerCase() : "";
-  return /^[a-z0-9_-]{1,32}$/.test(s) ? s : "direct";
-}
-export function cleanSession(v: unknown): string {
-  const s = typeof v === "string" ? v : "";
-  return /^[a-zA-Z0-9-]{8,64}$/.test(s) ? s : "anon";
-}
 export const isUuid = (v: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
 
-export async function logEvent(e: {
-  session_id: string; src: string; name: string; report_id?: string | null; props?: Record<string, unknown>; utm?: Record<string, string>;
-}) {
-  const { error } = await db().from("events").insert({
-    session_id: e.session_id, src: e.src, name: e.name, report_id: e.report_id ?? null, props: e.props ?? {}, utm: e.utm ?? {},
-  });
-  if (error) console.error("[event]", e.name, error.message);
-}
-
-/** 포트원 본인인증 키가 모두 있으면 14세 미만은 보호자 휴대폰 인증을 강제한다 */
-export function guardianVerificationEnabled() {
-  return !!(process.env.PORTONE_API_SECRET && process.env.NEXT_PUBLIC_PORTONE_STORE_ID && process.env.NEXT_PUBLIC_PORTONE_IDV_CHANNEL_KEY);
-}
-
 export function siteUrl() {
-  return (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
+  return (process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL && `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` || "http://localhost:3000").replace(/\/$/, "");
 }

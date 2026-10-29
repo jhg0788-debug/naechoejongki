@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Shell } from "@/components/Shell";
-import { db, isUuid, logEvent } from "@/lib/server";
+import { api, isUuid } from "@/lib/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "내최종키 · 결제 실패", robots: { index: false } };
@@ -11,14 +11,7 @@ export default async function PayFail({ searchParams }: { searchParams: Promise<
   const code = (sp.code ?? "").slice(0, 60);
   const message = (sp.message ?? "결제가 취소됐어요.").slice(0, 200);
   const canceled = code === "PAY_PROCESS_CANCELED" || code === "USER_CANCEL";
-
-  if (sp.orderId) {
-    const { data } = await db().from("orders").select("src, report_id, status").eq("order_id", sp.orderId).maybeSingle();
-    if (data && data.status === "ready") {
-      await db().from("orders").update({ status: canceled ? "canceled" : "failed", fail_code: code || null }).eq("order_id", sp.orderId);
-      await logEvent({ session_id: "server", src: data.src, name: "pay_fail", report_id: data.report_id, props: { code } });
-    }
-  }
+  if (sp.orderId) await api("failOrder", { orderId: sp.orderId, code });
 
   return (
     <Shell>

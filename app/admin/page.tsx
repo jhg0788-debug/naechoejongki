@@ -1,57 +1,33 @@
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createHash, timingSafeEqual } from "node:crypto";
-import { cleanSrc, db, siteUrl } from "@/lib/server";
+import { api, siteUrl } from "@/lib/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "내최종키 · 영상별 전환", robots: { index: false, follow: false } };
 
+// 비밀번호 검증과 데이터 조회는 nk-api가 한다. 쿠키에는 nk-api가 발급한 세션 토큰만 둔다.
 const COOKIE = "nk_admin";
-const sha = (s: string) => createHash("sha256").update(s).digest();
-
-/**
- * 관리자 비밀번호 확인값(sha256 hex)
- * ADMIN_KEY 환경변수가 있으면 그것을, 없으면 DB app_config.admin_password_sha256 을 쓴다.
- */
-async function adminHash(): Promise<Buffer | null> {
-  const env = process.env.ADMIN_KEY;
-  if (env) return sha("nk-admin:" + env);
-  const { data } = await db().from("app_config").select("value").eq("key", "admin_password_sha256").maybeSingle();
-  return data?.value && /^[0-9a-f]{64}$/.test(data.value) ? Buffer.from(data.value, "hex") : null;
-}
-const sessionToken = (h: Buffer) => sha("nk-session:" + h.toString("hex"));
-
-async function isAdmin() {
-  const h = await adminHash();
-  if (!h) return false;
-  const c = (await cookies()).get(COOKIE)?.value;
-  if (!c || !/^[0-9a-f]{64}$/.test(c)) return false;
-  return timingSafeEqual(Buffer.from(c, "hex"), sessionToken(h));
-}
+const token = async () => (await cookies()).get(COOKIE)?.value ?? "";
 
 async function login(form: FormData) {
   "use server";
-  const h = await adminHash();
-  const input = String(form.get("key") ?? "");
-  if (h && input && timingSafeEqual(sha("nk-admin:" + input), h)) {
-    (await cookies()).set(COOKIE, sessionToken(h).toString("hex"), { httpOnly: true, secure: true, sameSite: "lax", path: "/admin", maxAge: 60 * 60 * 24 * 30 });
+  const r = await api<{ token?: string }>("adminLogin", { password: String(form.get("key") ?? "") });
+  if (r.ok && r.data.token) {
+    (await cookies()).set(COOKIE, r.data.token, { httpOnly: true, secure: true, sameSite: "lax", path: "/admin", maxAge: 60 * 60 * 24 * 30 });
+    redirect("/admin");
   }
-  redirect("/admin");
+  redirect("/admin?e=pw");
 }
 
 async function saveVideo(form: FormData) {
   "use server";
-  if (!(await isAdmin())) redirect("/admin");
-  const code = cleanSrc(form.get("code"));
-  if (code === "direct") redirect("/admin?e=code");
-  const views = Math.max(0, Math.floor(Number(form.get("views") || 0)));
-  await db().from("videos").upsert({
-    code, title: String(form.get("title") ?? "").slice(0, 120), url: String(form.get("url") ?? "").slice(0, 300),
-    views, updated_at: new Date().toISOString(),
+  const r = await api("adminSaveVideo", {
+    token: await token(), code: form.get("code"), title: form.get("title"), url: form.get("url"), views: form.get("views"),
   });
+  if (r.status === 401) redirect("/admin");
   revalidatePath("/admin");
-  redirect("/admin");
+  redirect(r.ok ? "/admin" : "/admin?e=code");
 }
 
 type Row = { src: string; title: string | null; views: number; landing: number; started: number; completed: number; shared: number;
@@ -63,10 +39,8 @@ const won = (n: number) => n.toLocaleString("ko-KR") + "원";
 
 export default async function Admin({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
   const sp = await searchParams;
-  if (!(await adminHash())) {
-    return <div className="wrap"><main className="screen"><h2>관리자 비밀번호가 아직 설정되지 않았어요.</h2></main></div>;
-  }
-  if (!(await isAdmin())) {
+  const dash = await api<{ funnel: Row[]; videos: { code: string; title: string; url: string; views: number }[] }>("adminDashboard", { token: await token() });
+  if (!dash.ok) {
     return (
       <div className="wrap"><main className="screen">
         <h2>관리자 확인</h2>
@@ -74,14 +48,11 @@ export default async function Admin({ searchParams }: { searchParams: Promise<Re
           <input id="key" name="key" type="password" placeholder="관리자 비밀번호" autoComplete="current-password" />
           <button className="btn" type="submit">들어가기</button>
         </form>
+        {sp.e === "pw" ? <p className="err" role="alert">비밀번호가 맞지 않아요.</p> : null}
       </main></div>
     );
   }
-
-  const [{ data: funnel }, { data: videos }] = await Promise.all([
-    db().from("funnel_by_src").select("*"),
-    db().from("videos").select("code, title, url, views, updated_at").order("created_at", { ascending: true }),
-  ]);
+  const { funnel, videos } = dash.data;
   const rows = new Map<string, Row>();
   for (const f of (funnel ?? []) as Row[]) rows.set(f.src, { ...f });
   for (const v of videos ?? []) {

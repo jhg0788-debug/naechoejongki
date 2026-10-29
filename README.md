@@ -24,21 +24,17 @@ lib/
 supabase/migrations/     DB 스키마 (이미 naechoejongki 프로젝트에 적용됨)
 ```
 
-## 배포 (Vercel, 약 10분)
+## 구조 한 줄 요약
 
-1. 이 폴더를 GitHub 저장소로 올린다.
-2. Vercel → New Project → 저장소 선택. 프레임워크는 Next.js로 자동 인식된다.
-3. Environment Variables에 `.env.example` 항목을 채운다.
-   - `SUPABASE_SERVICE_ROLE_KEY`: Supabase 대시보드 → naechoejongki → Project Settings → API Keys → `service_role`
-   - `NEXT_PUBLIC_TOSS_CLIENT_KEY`, `TOSS_SECRET_KEY`: 토스페이먼츠 개발자센터 → API 키 → **결제위젯 연동 키** (`test_gck_…`, `test_gsk_…`)
-   - `ADMIN_KEY`: 16자 이상 아무 문자열
-   - `NEXT_PUBLIC_SITE_URL`: 첫 배포 후 나온 도메인을 넣고 한 번 더 배포
-4. 배포 후 `/admin` 에서 ADMIN_KEY로 로그인 → 영상 코드(s01, s02…) 등록.
-5. 쇼츠 고정댓글·설명란에 `https://도메인/?v=s01` 처럼 영상마다 코드만 바꿔 붙인다.
-6. 하루 한 번 각 영상 조회수를 `/admin`에 입력하면 `1만 뷰당 결제`가 계산된다.
+브라우저 → Next.js(Vercel, 비밀 키 없음) → Supabase Edge Function `nk-api`(비밀 키는 여기만) → DB.
+`supabase/functions/nk-api/` 에 예측 코드(`predict.ts`, `growth-chart.ts`, LMS json) 사본이 있다. `lib/` 쪽을 고치면 두 곳 다 맞춰서 함수를 다시 배포한다.
 
-로컬 실행: `cp .env.example .env.local` 후 값 채우고 `npm install && npm run dev`.
-예측 엔진만 확인: `npm run test:predict`.
+## 배포
+
+1. GitHub `main`에 push하면 Vercel이 자동 배포한다. Vercel 환경변수는 없어도 된다.
+2. 결제·본인인증 키는 Supabase 대시보드 → Edge Functions → `nk-api` → **Secrets**에 넣는다 (`.env.example` 맨 위 목록).
+3. `/admin` 비밀번호는 DB `app_config.admin_password_sha256`에 저장돼 있다 (sha256("nk-admin:" + 비밀번호)).
+4. 쇼츠 고정댓글·설명란에 `https://도메인/?v=s01` 처럼 영상마다 코드만 바꿔 붙인다.
 
 ## 유입 추적 규칙
 

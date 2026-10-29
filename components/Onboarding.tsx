@@ -16,10 +16,8 @@ interface S {
 }
 const EMPTY: S = { sex: null, by: null, bm: null, consent: false, h: null, w: null, dad: null, mom: null, last: null, pub: null, sleep: null, ex: null, milk: null, guardianId: null };
 
-const PORTONE_STORE = process.env.NEXT_PUBLIC_PORTONE_STORE_ID || "";
-const PORTONE_CHANNEL = process.env.NEXT_PUBLIC_PORTONE_IDV_CHANNEL_KEY || "";
-const GUARDIAN_IDV = !!(PORTONE_STORE && PORTONE_CHANNEL);
 const K_RESUME = "nk_ob_resume";
+type PublicConfig = { portoneStoreId: string | null; portoneChannelKey: string | null };
 
 type NumKey = "h" | "w" | "dad" | "mom" | "last";
 interface NumStep { id: NumKey; q: string; why: string; unit: string; min: number; max: number; step: number; def: (s: S) => number; skip?: boolean }
@@ -45,6 +43,11 @@ export default function Onboarding() {
 
   const [ivBusy, setIvBusy] = useState(false);
   const [ivErr, setIvErr] = useState("");
+  // 포트원 설정은 서버(nk-api)에 있을 때만 켜진다
+  const [cfg, setCfg] = useState<PublicConfig>({ portoneStoreId: null, portoneChannelKey: null });
+  useEffect(() => { fetch("/api/config").then(r => r.json()).then(setCfg).catch(() => {}); }, []);
+  const PORTONE_STORE = cfg.portoneStoreId || "", PORTONE_CHANNEL = cfg.portoneChannelKey || "";
+  const GUARDIAN_IDV = !!(PORTONE_STORE && PORTONE_CHANNEL);
 
   const verifyGuardian = async (identityVerificationId: string, base: S) => {
     setIvBusy(true); setIvErr("");
