@@ -60,17 +60,26 @@ const REMAIN_F = ["약 4~6년", "약 2~4년", "약 1~2년", "1년 안팎"] as co
 
 export class InputError extends Error {}
 
+/** 남은 성장 기간: 사춘기 전 어린 나이는 '성장이 거의 끝나는 나이'(남 17, 여 15세)까지 남은 햇수로 */
+function remainingText(sex: Sex, puberty: Puberty, age: number) {
+  if (puberty === 0) {
+    const left = Math.round((sex === "m" ? 17 : 15) - age);
+    if (left > 6) return `약 ${left}년`;
+  }
+  return (sex === "m" ? REMAIN_M : REMAIN_F)[puberty];
+}
+
 export function validate(x: Inputs, now = new Date()): void {
   const age = ageInYears(x.birthYear, x.birthMonth, now);
   const inRange = (v: number, a: number, b: number) => Number.isFinite(v) && v >= a && v <= b;
   if (x.sex !== "m" && x.sex !== "f") throw new InputError("성별을 골라 주세요.");
-  if (!(x.birthMonth >= 1 && x.birthMonth <= 12) || !(age >= 5 && age < 18)) throw new InputError("만 5세 이상, 만 18세 미만만 계산할 수 있어요.");
+  if (!(x.birthMonth >= 1 && x.birthMonth <= 12) || !(age >= 0 && age < 18)) throw new InputError("만 18세 미만만 계산할 수 있어요.");
   if (age < 14 && !x.under14Consent) throw new InputError("만 14세 미만은 보호자 확인이 필요해요.");
-  if (!inRange(x.height, 90, 200)) throw new InputError("지금 키는 90~200cm 사이로 입력해 주세요.");
-  if (x.weight != null && !inRange(x.weight, 15, 150)) throw new InputError("몸무게는 15~150kg 사이로 입력해 주세요.");
+  if (!inRange(x.height, 40, 200)) throw new InputError("지금 키는 40~200cm 사이로 입력해 주세요.");
+  if (x.weight != null && !inRange(x.weight, 2, 150)) throw new InputError("몸무게는 2~150kg 사이로 입력해 주세요.");
   if (!inRange(x.dad, 145, 205)) throw new InputError("아빠 키는 145~205cm 사이로 입력해 주세요.");
   if (!inRange(x.mom, 135, 190)) throw new InputError("엄마 키는 135~190cm 사이로 입력해 주세요.");
-  if (x.lastYear != null && !inRange(x.lastYear, 85, x.height)) throw new InputError("작년 키는 지금 키보다 작거나 같아야 해요.");
+  if (x.lastYear != null && !inRange(x.lastYear, 40, x.height)) throw new InputError("작년 키는 지금 키보다 작거나 같아야 해요.");
   if (![0, 1, 2, 3].includes(x.puberty)) throw new InputError("사춘기 신호를 골라 주세요.");
   if (![0, 1, 2, 3, 4].includes(x.sleep) || ![0, 1, 2, 3].includes(x.exercise) || ![0, 1, 2, 3].includes(x.milk))
     throw new InputError("생활습관 문항을 모두 골라 주세요.");
@@ -82,8 +91,11 @@ export function predict(x: Inputs, now = new Date()): FullResult {
   const zNow = zAt(x.sex, age, x.height);
   const pctPred = heightAtZ(x.sex, 18, zNow);
 
+  // 어릴수록 지금 백분위가 최종 키를 덜 말해준다 (만 2~3세 전에는 성장 궤도가 자주 바뀐다)
   let w: number = PCT_WEIGHT[x.puberty];
   if (age < 8) w = Math.min(w, 0.3);
+  if (age < 4) w = Math.min(w, 0.2);
+  if (age < 2) w = Math.min(w, 0.1);
   let median = (1 - w) * mph + w * pctPred;
   const minAdd = MIN_REMAINING[x.puberty];
   if (age < 17.5 && median < x.height + minAdd) median = x.height + minAdd;
@@ -91,6 +103,8 @@ export function predict(x: Inputs, now = new Date()): FullResult {
 
   let half: number = BASE_HALF[x.puberty];
   if (x.lastYear == null) half += 1;
+  if (age < 4) half += 1;
+  if (age < 2) half += 1;
   let velocityFlag = false;
   if (x.lastYear != null) {
     const v = x.height - x.lastYear;
@@ -119,7 +133,7 @@ export function predict(x: Inputs, now = new Date()): FullResult {
     median: Math.round(median * 10) / 10,
     mph: Math.round(mph * 10) / 10,
     pctPred: Math.round(pctPred * 10) / 10,
-    remaining: (x.sex === "m" ? REMAIN_M : REMAIN_F)[x.puberty],
+    remaining: remainingText(x.sex, x.puberty, age),
     toGo: Math.round((median - x.height) * 10) / 10,
     zNow, zFinal: zAt(x.sex, 18, median),
     habitPos, habitLabel,

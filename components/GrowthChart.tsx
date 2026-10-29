@@ -4,13 +4,15 @@ import { heightAtZ, type Sex } from "@/lib/growth-chart";
 export function GrowthChart({ sex, age, height, zNow, zFinal, lo, hi }: {
   sex: Sex; age: number; height: number; zNow: number; zFinal: number; lo: number; hi: number;
 }) {
-  const W = 340, H = 230, L = 34, R = 14, T = 12, B = 26, a0 = 5, a1 = 18;
-  const h0 = sex === "m" ? 100 : 95, h1 = sex === "m" ? 200 : 185;
+  const W = 340, H = 230, L = 34, R = 14, T = 12, B = 26, a1 = 18;
+  // 만 5세 미만이면 출생부터 그린다
+  const a0 = age < 5 ? 0 : 5;
+  const h0 = a0 === 0 ? 40 : sex === "m" ? 100 : 95, h1 = sex === "m" ? 200 : 185;
   const X = (a: number) => L + ((a - a0) / (a1 - a0)) * (W - L - R);
   const Y = (h: number) => T + ((h1 - h) / (h1 - h0)) * (H - T - B);
   const line = (z: number) => {
     let d = "";
-    for (let a = a0; a <= a1 + 1e-9; a += 0.5) d += (d ? "L" : "M") + X(a).toFixed(1) + "," + Y(heightAtZ(sex, a, z)).toFixed(1);
+    for (let a = a0; a <= a1 + 1e-9; a += 0.25) d += (d ? "L" : "M") + X(a).toFixed(1) + "," + Y(heightAtZ(sex, a, z)).toFixed(1);
     return d;
   };
   let path = "";
@@ -30,7 +32,7 @@ export function GrowthChart({ sex, age, height, zNow, zFinal, lo, hi }: {
           <text x={L - 6} y={Y(h) + 4} textAnchor="end" fontSize={10} fill="var(--muted)">{h}</text>
         </g>
       ))}
-      {[6, 8, 10, 12, 14, 16, 18].map(a => (
+      {(a0 === 0 ? [0, 3, 6, 9, 12, 15, 18] : [6, 8, 10, 12, 14, 16, 18]).map(a => (
         <text key={a} x={X(a)} y={H - 8} textAnchor="middle" fontSize={10} fill="var(--muted)">{a}세</text>
       ))}
       <rect x={X(18) - 7} y={Y(hi)} width={14} height={Math.max(2, Y(lo) - Y(hi))} fill="var(--band)" stroke="var(--accent)" strokeWidth={1.5} />

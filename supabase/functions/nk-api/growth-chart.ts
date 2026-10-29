@@ -34,7 +34,7 @@ const official = lms as unknown as Partial<Table> & { source?: string };
 const TABLE: Table = official.m?.length && official.f?.length ? (official as Table) : approxTable();
 export const CHART_SOURCE = official.m?.length ? (official.source ?? "질병관리청 2017 성장도표 LMS") : "근사값(프로토타입)";
 
-export const CHART_MIN_AGE = 5;
+export const CHART_MIN_AGE = 0;
 export const CHART_MAX_AGE = 18;
 
 function lmsAt(sex: Sex, age: number): { L: number; M: number; S: number } {

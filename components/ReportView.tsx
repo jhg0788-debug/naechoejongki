@@ -140,13 +140,16 @@ function DeleteReport({ id }: { id: string }) {
 }
 
 function Meter({ lo, hi, now }: { lo: number; hi: number; now: number }) {
-  const a = 140, b = 200, x = (v: number) => ((Math.min(b, Math.max(a, v)) - a) / (b - a)) * 100;
+  // 지금 키가 140cm보다 작으면 눈금 시작을 내려서 지금 위치도 보이게 한다
+  const a = Math.min(140, Math.floor((now - 5) / 10) * 10), b = 200, x = (v: number) => ((Math.min(b, Math.max(a, v)) - a) / (b - a)) * 100;
+  const step = b - a > 80 ? 20 : 10;
+  const marks: number[] = []; for (let m = a; m <= b; m += step) marks.push(m);
   return (
     <div className="meter" role="img" aria-label={`예상 범위 ${lo}에서 ${hi}cm, 지금 키 ${now}cm`}>
       <div className="ticks" />
       <div className="bandv" style={{ left: `${x(lo)}%`, width: `${x(hi) - x(lo)}%` }} />
       <div className="now" style={{ left: `${x(now)}%` }} />
-      {[140, 150, 160, 170, 180, 190, 200].map(m => <div key={m} className="mk" style={{ left: `${x(m)}%` }}>{m}</div>)}
+      {marks.map(m => <div key={m} className="mk" style={{ left: `${x(m)}%` }}>{m}</div>)}
     </div>
   );
 }
@@ -198,7 +201,7 @@ function Detail({ full, report }: { full: FullResult; report: ReportData }) {
         <div className="row"><span>수면</span><em>{SLEEP[h.sleep]}</em></div>
         <div className="row"><span>운동</span><em>{EX[h.exercise]}</em></div>
         <div className="row"><span>우유·단백질</span><em>{MILK[h.milk]}</em></div>
-        <p className="note">청소년 권장 수면은 하루 8~10시간이에요(미국수면의학회). 습관은 예측 범위 안에서 위치를 보여주는 참고 지표이고, 키를 늘린다는 뜻이 아니에요.</p>
+        <p className="note">권장 수면은 나이마다 달라요. 미국수면의학회 기준 1~2세 11~14시간, 3~5세 10~13시간, 6~12세 9~12시간, 청소년 8~10시간이에요. 습관은 예측 범위 안에서 위치를 보여주는 참고 지표이고, 키를 늘린다는 뜻이 아니에요.</p>
       </div>
       {full.wide || full.velocityFlag ? (
         <div className="notice">

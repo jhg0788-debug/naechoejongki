@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Shell } from "./Shell";
 import { captureSource, currentSrc, sessionId, track } from "@/lib/track";
 import { ageInYears } from "@/lib/predict";
+import { heightAtZ } from "@/lib/growth-chart";
 
 type Sex = "m" | "f";
 interface S {
@@ -21,12 +22,21 @@ type PublicConfig = { portoneStoreId: string | null; portoneChannelKey: string |
 
 type NumKey = "h" | "w" | "dad" | "mom" | "last";
 interface NumStep { id: NumKey; q: string; why: string; unit: string; min: number; max: number; step: number; def: (s: S) => number; skip?: boolean }
+// 나이에 맞는 기본값 (성장도표 중앙값 근처에서 시작)
+const ageOf = (s: S) => (s.by && s.bm ? Math.max(0, ageInYears(s.by, s.bm)) : 12);
+const medianH = (s: S) => Math.round(heightAtZ(s.sex ?? "m", ageOf(s), 0) * 2) / 2;
+const typicalW = (s: S) => {
+  const a = ageOf(s);
+  if (a < 1) return Math.round((3.4 + a * 12 * 0.55) * 2) / 2;
+  if (a < 10) return Math.round(2 * a + 8);
+  return s.sex === "f" ? 47 : 52;
+};
 const NUM: Record<NumKey, NumStep> = {
-  h: { id: "h", q: "지금 키는 몇 cm예요?", why: "최근 3개월 안에 잰 키가 가장 정확해요. 아침에 잰 키를 추천해요.", unit: "cm", min: 90, max: 200, step: 0.5, def: s => (s.sex === "f" ? 155 : 160) },
-  w: { id: "w", q: "몸무게는요?", why: "월별 기록에 쓰여요. 예상키 범위 계산에는 넣지 않아요.", unit: "kg", min: 15, max: 150, step: 0.5, def: s => (s.sex === "f" ? 47 : 52) },
-  dad: { id: "dad", q: "아빠 키는 몇 cm예요?", why: "부모 키 평균(중간부모키)은 최종 키를 가늠하는 가장 기본 자료예요.", unit: "cm", min: 145, max: 205, step: 1, def: () => 174 },
+  h: { id: "h", q: "지금 키는 몇 cm예요?", why: "최근 3개월 안에 잰 키가 가장 정확해요. 만 2세 전 아기는 누워서 잰 키를 넣어 주세요.", unit: "cm", min: 40, max: 200, step: 0.5, def: medianH },
+  w: { id: "w", q: "몸무게는요?", why: "월별 기록에 쓰여요. 예상키 범위 계산에는 넣지 않아요.", unit: "kg", min: 2, max: 150, step: 0.5, def: typicalW },
+  dad: { id: "dad", q: "아빠 키는 몇 cm예요?", why: "부모 키 평균(중간부모키)은 최종 키를 가늠하는 가장 기본 자료예요. 아이가 어릴수록 이 비중이 커져요.", unit: "cm", min: 145, max: 205, step: 1, def: () => 174 },
   mom: { id: "mom", q: "엄마 키는 몇 cm예요?", why: "아빠 키와 함께 중간부모키 공식에 들어가요.", unit: "cm", min: 135, max: 190, step: 1, def: () => 161 },
-  last: { id: "last", q: "작년 이맘때 키는요?", why: "1년 동안 자란 양으로 성장 속도를 봐요. 모르면 건너뛰어도 돼요. 대신 범위가 조금 넓어져요.", unit: "cm", min: 85, max: 200, step: 0.5, def: s => (s.h ? Math.round(s.h - 5) : 150), skip: true },
+  last: { id: "last", q: "작년 이맘때 키는요?", why: "1년 동안 자란 양으로 성장 속도를 봐요. 모르면 건너뛰어도 돼요. 대신 범위가 조금 넓어져요.", unit: "cm", min: 40, max: 200, step: 0.5, def: s => (s.h ? Math.max(40, Math.round(s.h - (ageOf(s) < 3 ? 12 : 6))) : 150), skip: true },
 };
 
 const ORDER = ["intro", "sex", "birth", "consent", "h", "w", "dad", "mom", "last", "pub", "sleep", "habit", "calc"] as const;
@@ -106,7 +116,11 @@ export default function Onboarding() {
     track("landing", { props: { path: location.pathname } });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const visible = ORDER.filter(id => id !== "consent" || (age != null && age < 14));
+  const tooYoungForPuberty = age != null && age < (s.sex === "f" ? 7 : 8);
+  const visible = ORDER.filter(id =>
+    (id !== "consent" || (age != null && age < 14)) &&
+    (id !== "last" || age == null || age >= 1) &&
+    (id !== "pub" || !tooYoungForPuberty));
   const questions = visible.filter(id => id !== "intro" && id !== "calc");
   const qIdx = questions.indexOf(cur as any);
 
@@ -134,7 +148,7 @@ export default function Onboarding() {
             session_id: sessionId(), src: currentSrc(),
             sex: s.sex, birthYear: s.by, birthMonth: s.bm, under14Consent: s.consent, guardianVerificationId: s.guardianId,
             height: s.h, weight: s.w, dad: s.dad, mom: s.mom, lastYear: s.last,
-            puberty: s.pub, sleep: s.sleep, exercise: s.ex, milk: s.milk,
+            puberty: tooYoungForPuberty ? 0 : s.pub, sleep: s.sleep, exercise: s.ex, milk: s.milk,
           }),
         });
         const body = await res.json();
@@ -158,7 +172,7 @@ export default function Onboarding() {
           <div className="hero-ruler">
             <div className="ruler" aria-hidden="true" />
             <div className="hero-copy">
-              <div className="eyebrow">만 5~17세 · 질문 10개 · 1분</div>
+              <div className="eyebrow">만 0~17세 · 질문 10개 안팎 · 1분</div>
               <h1>내 최종 예상키,<br />범위로 확인해 봐</h1>
               <p className="note">부모님 키, 지금 키, 사춘기 단계로 만 18세 무렵 예상키 범위를 계산해요.</p>
               <div className="facts">
@@ -243,7 +257,7 @@ export default function Onboarding() {
         <section className="screen">
           <h2>운동이랑 우유·단백질은요?</h2>
           <Why text="이것도 범위 안 위치 표시에만 쓰여요. cm를 더하거나 빼지 않아요." />
-          <Group title="땀 날 정도 운동, 일주일에" value={s.ex} opts={["거의 안 해요", "1~2일", "3~4일", "5일 이상"]} onPick={v => set({ ex: v })} />
+          <Group title="땀 날 정도로 뛰어노는 날, 일주일에" value={s.ex} opts={["거의 안 해요", "1~2일", "3~4일", "5일 이상"]} onPick={v => set({ ex: v })} />
           <Group title="우유·유제품·고기·달걀, 하루에" value={s.milk} opts={["거의 안 먹어요", "1번", "2번", "3번 이상"]} onPick={v => set({ milk: v })} />
           <div className="actions"><button className="btn" disabled={s.ex == null || s.milk == null} onClick={() => go(1)}>결과 보기</button></div>
         </section>
@@ -294,11 +308,12 @@ function Birth({ s, now, onDone }: { s: S; now: Date; onDone: (by: number, bm: n
   const [bm, setBm] = useState(s.bm ? String(s.bm) : "");
   const [err, setErr] = useState("");
   const Y = now.getFullYear();
-  const years = Array.from({ length: 14 }, (_, i) => Y - 5 - i);
+  const years = Array.from({ length: 18 }, (_, i) => Y - i);
   const submit = () => {
     if (!by || !bm) return setErr("태어난 해와 월을 모두 골라 주세요.");
     const a = ageInYears(+by, +bm, now);
-    if (a < 5 || a >= 18) return setErr("만 5세 이상, 만 18세 미만만 계산할 수 있어요.");
+    if (a < 0) return setErr("아직 태어나지 않은 달이에요. 다시 골라 주세요.");
+    if (a >= 18) return setErr("만 18세 미만만 계산할 수 있어요.");
     onDone(+by, +bm);
   };
   return (

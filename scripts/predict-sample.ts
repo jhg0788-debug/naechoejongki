@@ -7,6 +7,9 @@ const cases: [string, Inputs][] = [
   ["고1 여 160 / 아빠172 엄마158 / 초경 1년+", { sex: "f", birthYear: 2010, birthMonth: 9, height: 160, weight: 50, dad: 172, mom: 158, lastYear: null, puberty: 3, sleep: 1, exercise: 0, milk: 0 }],
   ["초5 남 140 / 아빠180 엄마165 / 사춘기 전 (보호자)", { sex: "m", birthYear: 2015, birthMonth: 2, height: 140, weight: 36, dad: 180, mom: 165, lastYear: 134, puberty: 0, sleep: 3, exercise: 3, milk: 3, under14Consent: true }],
   ["중1 여 150 / 아빠168 엄마155 / 성장속도 빠름", { sex: "f", birthYear: 2013, birthMonth: 6, height: 150, weight: 42, dad: 168, mom: 155, lastYear: 140, puberty: 1, sleep: 2, exercise: 1, milk: 2, under14Consent: true }],
+  ["6개월 남아 67.6 / 아빠175 엄마162", { sex: "m", birthYear: 2026, birthMonth: 4, height: 67.6, weight: 8, dad: 175, mom: 162, lastYear: null, puberty: 0, sleep: 4, exercise: 1, milk: 3, under14Consent: true }],
+  ["만 2세 여아 86 / 아빠170 엄마158", { sex: "f", birthYear: 2024, birthMonth: 9, height: 86, weight: 12, dad: 170, mom: 158, lastYear: 75, puberty: 0, sleep: 4, exercise: 2, milk: 2, under14Consent: true }],
+  ["만 4세 남아 105(큰 편) / 아빠168 엄마155", { sex: "m", birthYear: 2022, birthMonth: 6, height: 105, weight: 17, dad: 168, mom: 155, lastYear: 97, puberty: 0, sleep: 3, exercise: 3, milk: 2, under14Consent: true }],
 ];
 for (const [name, x] of cases) {
   validate(x, now);
