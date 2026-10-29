@@ -8,23 +8,34 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "내최종키 · 영상별 전환", robots: { index: false, follow: false } };
 
 const COOKIE = "nk_admin";
-const digest = (s: string) => createHash("sha256").update("nk:" + s).digest();
+const sha = (s: string) => createHash("sha256").update(s).digest();
+
+/**
+ * 관리자 비밀번호 확인값(sha256 hex)
+ * ADMIN_KEY 환경변수가 있으면 그것을, 없으면 DB app_config.admin_password_sha256 을 쓴다.
+ */
+async function adminHash(): Promise<Buffer | null> {
+  const env = process.env.ADMIN_KEY;
+  if (env) return sha("nk-admin:" + env);
+  const { data } = await db().from("app_config").select("value").eq("key", "admin_password_sha256").maybeSingle();
+  return data?.value && /^[0-9a-f]{64}$/.test(data.value) ? Buffer.from(data.value, "hex") : null;
+}
+const sessionToken = (h: Buffer) => sha("nk-session:" + h.toString("hex"));
 
 async function isAdmin() {
-  const key = process.env.ADMIN_KEY;
-  if (!key) return false;
+  const h = await adminHash();
+  if (!h) return false;
   const c = (await cookies()).get(COOKIE)?.value;
-  if (!c) return false;
-  const a = Buffer.from(c, "hex"), b = digest(key);
-  return a.length === b.length && timingSafeEqual(a, b);
+  if (!c || !/^[0-9a-f]{64}$/.test(c)) return false;
+  return timingSafeEqual(Buffer.from(c, "hex"), sessionToken(h));
 }
 
 async function login(form: FormData) {
   "use server";
-  const key = process.env.ADMIN_KEY;
+  const h = await adminHash();
   const input = String(form.get("key") ?? "");
-  if (key && input.length === key.length && timingSafeEqual(Buffer.from(input), Buffer.from(key))) {
-    (await cookies()).set(COOKIE, digest(key).toString("hex"), { httpOnly: true, secure: true, sameSite: "lax", path: "/admin", maxAge: 60 * 60 * 24 * 30 });
+  if (h && input && timingSafeEqual(sha("nk-admin:" + input), h)) {
+    (await cookies()).set(COOKIE, sessionToken(h).toString("hex"), { httpOnly: true, secure: true, sameSite: "lax", path: "/admin", maxAge: 60 * 60 * 24 * 30 });
   }
   redirect("/admin");
 }
@@ -52,15 +63,15 @@ const won = (n: number) => n.toLocaleString("ko-KR") + "원";
 
 export default async function Admin({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
   const sp = await searchParams;
-  if (!process.env.ADMIN_KEY) {
-    return <div className="wrap"><main className="screen"><h2>ADMIN_KEY 환경변수를 먼저 설정해 주세요.</h2></main></div>;
+  if (!(await adminHash())) {
+    return <div className="wrap"><main className="screen"><h2>관리자 비밀번호가 아직 설정되지 않았어요.</h2></main></div>;
   }
   if (!(await isAdmin())) {
     return (
       <div className="wrap"><main className="screen">
         <h2>관리자 확인</h2>
         <form action={login} className="form" style={{ gridTemplateColumns: "1fr" }}>
-          <input id="key" name="key" type="password" placeholder="ADMIN_KEY" autoComplete="current-password" />
+          <input id="key" name="key" type="password" placeholder="관리자 비밀번호" autoComplete="current-password" />
           <button className="btn" type="submit">들어가기</button>
         </form>
       </main></div>
