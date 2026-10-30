@@ -141,3 +141,91 @@ td.hl{color:var(--accent);font-weight:700}
 .form{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;align-items:end}
 .form input{width:100%;border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px}
 .form .btn{padding:11px}
+
+/* ───── 입체감 레이어: 빛은 위에서, 버튼은 눌리는 키, 카드는 떠 있는 판 ───── */
+:root{
+  --hi:rgba(255,255,255,.85); --sh:19,32,42; --edge-accent:#D63E1C; --edge:#C9D3DB;
+  --lift:0 1px 0 var(--hi) inset,0 1px 2px rgba(var(--sh),.06),0 10px 24px -10px rgba(var(--sh),.22),0 28px 48px -28px rgba(var(--sh),.25);
+  --sink:inset 0 2px 4px rgba(var(--sh),.10),inset 0 -1px 0 var(--hi);
+  --glow:radial-gradient(120% 60% at 50% -10%,#FFF3D6 0%,transparent 60%),radial-gradient(80% 50% at 110% 30%,#FFE6DE 0%,transparent 55%);
+}
+@media (prefers-color-scheme: dark){:root{
+  --hi:rgba(255,255,255,.07); --sh:0,0,0; --edge-accent:#B8401F; --edge:#0A1015;
+  --glow:radial-gradient(120% 60% at 50% -10%,#2A2412 0%,transparent 60%),radial-gradient(80% 50% at 110% 30%,#2A1A16 0%,transparent 55%);
+}}
+body{background:var(--glow),var(--bg);background-attachment:fixed}
+.top{background:color-mix(in srgb,var(--bg) 78%,transparent);-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4)}
+
+/* 줄자: 금속 테이프처럼 위쪽 하이라이트, 아래쪽 그림자 */
+.ruler{border-radius:6px;
+  background-image:linear-gradient(90deg,rgba(255,255,255,.55) 0,rgba(255,255,255,.08) 35%,rgba(0,0,0,.14) 100%),
+    repeating-linear-gradient(to bottom,var(--tape-ink) 0 1px,transparent 1px 8px),
+    repeating-linear-gradient(to bottom,var(--tape-ink) 0 2px,transparent 2px 40px);
+  background-size:100% 100%,10px 100%,20px 100%;background-repeat:no-repeat;
+  box-shadow:0 1px 0 var(--hi) inset,0 6px 0 -1px #C9951A,0 14px 24px -10px rgba(201,149,26,.55)}
+.brand i{border-radius:3px;box-shadow:0 2px 0 #C9951A,0 4px 8px -3px rgba(201,149,26,.6)}
+.tape{height:20px;border-radius:999px;box-shadow:var(--sink)}
+.tape .fill{border-radius:999px;
+  background-image:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 50%,rgba(0,0,0,.12)),
+    repeating-linear-gradient(to right,var(--tape-ink) 0 1px,transparent 1px 6px),repeating-linear-gradient(to right,var(--tape-ink) 0 1px,transparent 1px 30px);
+  background-size:100% 100%,100% 6px,100% 11px;background-repeat:no-repeat,repeat-x,repeat-x;
+  box-shadow:0 2px 6px -1px rgba(201,149,26,.6)}
+.tape .lbl{line-height:20px}
+
+/* 제목: 살짝 눌러 찍은 듯한 두께 */
+h1,h2{text-shadow:0 2px 0 color-mix(in srgb,var(--tape) 55%,transparent)}
+.range{text-shadow:0 3px 0 var(--band),0 6px 14px rgba(var(--sh),.12)}
+
+/* 카드·안내 상자: 떠 있는 판 */
+.card,.paybox,.why,.check{border:0;box-shadow:var(--lift);
+  background:linear-gradient(180deg,var(--surface),color-mix(in srgb,var(--surface) 92%,var(--bg)))}
+.card{border-radius:20px;padding:20px}
+.why,.check{border-radius:14px}
+
+/* 선택지·± 버튼: 눌리는 키 */
+.chip,.step,select{border:0;background:linear-gradient(180deg,var(--surface),color-mix(in srgb,var(--surface) 90%,var(--bg)));
+  box-shadow:0 1px 0 var(--hi) inset,0 3px 0 var(--edge),0 8px 16px -8px rgba(var(--sh),.25);
+  transition:transform .12s ease,box-shadow .12s ease}
+.chip:hover,.step:hover{transform:translateY(-1px);box-shadow:0 1px 0 var(--hi) inset,0 4px 0 var(--edge),0 12px 20px -8px rgba(var(--sh),.28)}
+.chip:active,.step:active{transform:translateY(3px);box-shadow:0 1px 0 var(--hi) inset,0 0 0 var(--edge),0 2px 4px -2px rgba(var(--sh),.3)}
+.chip[aria-pressed="true"]{transform:translateY(2px);
+  background:linear-gradient(180deg,color-mix(in srgb,var(--band) 55%,var(--surface)),var(--band));
+  box-shadow:inset 0 0 0 2px var(--accent),0 1px 0 var(--edge-accent),0 4px 10px -6px rgba(255,90,54,.5)}
+
+/* 메인 버튼: 두께 있는 주황 키 */
+.btn{position:relative;border-radius:16px;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 82%,#fff),var(--accent) 55%);
+  box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 5px 0 var(--edge-accent),0 14px 24px -8px rgba(255,90,54,.55);
+  transition:transform .12s ease,box-shadow .12s ease;margin-bottom:5px}
+.btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 6px 0 var(--edge-accent),0 18px 28px -8px rgba(255,90,54,.6)}
+.btn:active:not(:disabled){transform:translateY(5px);box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 0 0 var(--edge-accent),0 3px 6px -2px rgba(255,90,54,.5)}
+.btn:disabled{opacity:.45;box-shadow:0 3px 0 var(--edge-accent)}
+.btn.ghost{background:linear-gradient(180deg,var(--surface),color-mix(in srgb,var(--surface) 90%,var(--bg)));border:0;
+  box-shadow:0 1px 0 var(--hi) inset,0 4px 0 var(--edge),0 10px 18px -8px rgba(var(--sh),.25)}
+.btn.ghost:active{box-shadow:0 0 0 var(--edge)}
+.btn.text{background:none;box-shadow:none;margin:0}
+.btn.text:active,.btn.text:hover{transform:none;box-shadow:none}
+
+/* 숫자 입력: 움푹 들어간 계기판 */
+.numbox{border:0;border-radius:14px;padding:8px 14px;background:color-mix(in srgb,var(--bg) 70%,var(--surface));box-shadow:var(--sink)}
+.numbox input{text-shadow:0 2px 0 var(--band)}
+
+/* 신장계: 홈 파인 눈금판 + 반짝이는 범위 띠 + 지금 키 핀 */
+.meter{border-radius:10px;box-shadow:var(--sink);background:linear-gradient(180deg,color-mix(in srgb,var(--lock) 85%,#000 0%),var(--lock))}
+.meter .bandv{border-radius:4px;background:linear-gradient(180deg,color-mix(in srgb,var(--band) 60%,#fff),var(--band));
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 30%,transparent),0 6px 14px -4px rgba(255,90,54,.45)}
+.meter .now{width:3px;border-radius:2px;box-shadow:0 2px 4px rgba(var(--sh),.35)}
+.meter .now::before{content:"";position:absolute;top:-7px;left:50%;width:11px;height:11px;border-radius:50%;transform:translateX(-50%);
+  background:radial-gradient(circle at 35% 30%,#fff 0 15%,var(--ink) 55%);box-shadow:0 2px 4px rgba(var(--sh),.4)}
+
+/* 칸·잠금 항목: 판 위에 파인 홈 */
+.stat,.lockitem{border-radius:14px;background:color-mix(in srgb,var(--bg) 80%,var(--surface));box-shadow:var(--sink)}
+.lockitem{position:relative;overflow:hidden}
+.lockitem::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.35) 50%,transparent 60%);
+  transform:translateX(-100%);animation:shine 3.2s ease-in-out infinite}
+@keyframes shine{60%,100%{transform:translateX(100%)}}
+.calc div.on i{box-shadow:0 2px 0 #C9951A}
+.sheet-in{box-shadow:0 -1px 0 var(--hi) inset,0 -20px 40px -10px rgba(var(--sh),.3)}
+.bubble{box-shadow:0 3px 0 #C9951A,0 10px 18px -8px rgba(201,149,26,.5)}
+.toast{box-shadow:0 10px 24px -6px rgba(var(--sh),.45)}
+@media (prefers-reduced-motion:reduce){.lockitem::after{animation:none;display:none}.chip,.step,.btn{transition:none}}
