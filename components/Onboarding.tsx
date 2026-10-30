@@ -46,6 +46,12 @@ export default function Onboarding() {
   const router = useRouter();
   const [s, setS] = useState<S>(EMPTY);
   const [cur, setCur] = useState<StepId>("intro");
+  // 부모 타깃 영상(?v=p01 등)으로 들어오면 보호자 문구 + 결과에서 바로 결제로
+  const [guardianMode, setGuardianMode] = useState(false);
+  useEffect(() => {
+    const v = (new URLSearchParams(location.search).get("v") || currentSrc()).toLowerCase();
+    setGuardianMode(/^p\d/.test(v));
+  }, []);
   const [err, setErr] = useState("");
   const tracked = useRef(false);
   const now = useMemo(() => new Date(), []);
@@ -154,7 +160,7 @@ export default function Onboarding() {
         const body = await res.json();
         if (!res.ok) throw new Error(body?.error || "계산하지 못했어요.");
         const wait = Math.max(0, 1800 - (Date.now() - started));
-        setTimeout(() => { if (!cancelled) router.push(`/r/${body.id}`); }, wait);
+        setTimeout(() => { if (!cancelled) router.push(guardianMode ? `/r/${body.id}?p=2` : `/r/${body.id}`); }, wait);
       } catch (e: any) {
         if (!cancelled) { setErr(e?.message || "계산하지 못했어요. 다시 시도해 주세요."); }
       }
@@ -173,8 +179,17 @@ export default function Onboarding() {
             <div className="ruler" aria-hidden="true" />
             <div className="hero-copy">
               <div className="eyebrow">만 0~17세 · 질문 10개 안팎 · 1분</div>
-              <h1>내 최종 예상키,<br />범위로 확인해 봐</h1>
-              <p className="note">부모님 키, 지금 키, 사춘기 단계로 만 18세 무렵 예상키 범위를 계산해요.</p>
+              {guardianMode ? (
+                <>
+                  <h1>우리 아이 최종 키,<br />지금 범위로 확인해 보세요</h1>
+                  <p className="note">돌 아기부터 고등학생까지. 엄마·아빠 키와 아이의 지금 키로 만 18세 무렵 예상키 범위를 계산해요.</p>
+                </>
+              ) : (
+                <>
+                  <h1>내 최종 예상키,<br />범위로 확인해 봐</h1>
+                  <p className="note">부모님 키, 지금 키, 사춘기 단계로 만 18세 무렵 예상키 범위를 계산해요.</p>
+                </>
+              )}
               <div className="facts">
                 <div><b>공식</b><span>중간부모키 (아빠 키 + 엄마 키 ± 13) ÷ 2</span></div>
                 <div><b>도표</b><span>질병관리청 2017 소아청소년 성장도표 백분위</span></div>
@@ -182,7 +197,7 @@ export default function Onboarding() {
               </div>
             </div>
           </div>
-          <div className="actions"><button className="btn" onClick={() => { track("start"); go(1); }}>예상키 확인하기</button></div>
+          <div className="actions"><button className="btn" onClick={() => { track("start", { props: { mode: guardianMode ? "guardian" : "teen" } }); go(1); }}>예상키 확인하기</button></div>
         </section>
       )}
 

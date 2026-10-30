@@ -21,7 +21,7 @@ export interface ReportData {
 
 const won = (n: number) => n.toLocaleString("ko-KR") + "원";
 
-export default function ReportView({ report, view, justPaid }: { report: ReportData; view: "child" | "parent"; justPaid: boolean }) {
+export default function ReportView({ report, view, justPaid }: { report: ReportData; view: "child" | "parent" | "guardian"; justPaid: boolean }) {
   const { free, full } = report;
   const sexK = report.sex === "m" ? "남자" : "여자";
   const opened = useRef(false);
@@ -48,7 +48,9 @@ export default function ReportView({ report, view, justPaid }: { report: ReportD
   const shareFriend = async () => {
     const ch = await share({
       title: "내최종키 · 내 예상키는?",
-      text: `내최종키에서 예상키 범위 ${free.lo}~${free.hi}cm 나옴. 너도 해봐`,
+      text: view === "guardian"
+        ? "엄마·아빠 키랑 아이 지금 키로 최종 예상키 범위를 볼 수 있어요. 돌 아기부터 돼요."
+        : `내최종키에서 예상키 범위 ${free.lo}~${free.hi}cm 나옴. 너도 해봐`,
       url: homeUrl, button: "나도 해보기",
     });
     track("share_friend", { report_id: report.id, props: { channel: ch } });
@@ -76,6 +78,7 @@ export default function ReportView({ report, view, justPaid }: { report: ReportD
             <div className="stat"><div className="k">예측 신뢰도</div><div className="v">{free.confidence}</div></div>
           </div>
           {view === "child" ? <button className="btn ghost" onClick={shareFriend}>친구랑 비교하기</button> : null}
+          {view === "guardian" ? <button className="btn ghost" onClick={shareFriend}>다른 부모에게 알려주기</button> : null}
         </div>
 
         {full && report.habits ? (
@@ -84,7 +87,7 @@ export default function ReportView({ report, view, justPaid }: { report: ReportD
           <div className="card">
             <div>
               <div className="eyebrow">상세 리포트</div>
-              <h3 style={{ marginTop: 4 }}>{view === "parent" ? "보호자 결제 후 열려요" : "보호자 확인 후 열려요"}</h3>
+              <h3 style={{ marginTop: 4 }}>{view === "child" ? "보호자 확인 후 열려요" : "보호자 결제 후 열려요"}</h3>
             </div>
             <div style={{ display: "grid", gap: 10 }}>
               <Lock name="가장 가능성 높은 키" sub="범위 안 중앙값" blur="17?.? cm" />
@@ -92,7 +95,7 @@ export default function ReportView({ report, view, justPaid }: { report: ReportD
               <Lock name="성장 곡선" sub="성장도표 위 지금 위치와 예상 경로" blur="〰〰〰" />
               <Lock name="생활습관 위치" sub="수면·운동·영양이 범위 어디쯤인지" blur="▮▮▯▯" />
             </div>
-            {view === "parent" ? (
+            {view !== "child" ? (
               <>
                 <Link className="btn" href={`/r/${report.id}/pay`}>상세 리포트 열기 · {won(report.price)}</Link>
                 <p className="note">1회 결제로 이 리포트를 계속 볼 수 있어요. 정기결제가 아니에요.</p>
@@ -106,7 +109,7 @@ export default function ReportView({ report, view, justPaid }: { report: ReportD
           </div>
         )}
 
-        <Link className="btn text" href="/">{view === "parent" ? "다른 자녀도 확인하기" : "처음부터 다시 하기"}</Link>
+        <Link className="btn text" href="/">{view === "child" ? "처음부터 다시 하기" : "다른 자녀도 확인하기"}</Link>
         <DeleteReport id={report.id} />
       </section>
     </Shell>

@@ -20,6 +20,7 @@ export default async function ReportPage({ params, searchParams }: {
   // 결제 전에는 nk-api가 잠금 필드를 아예 내려주지 않는다
   const r = await api<ReportData>("getReport", { id });
   if (!r.ok) notFound();
-  const view = sp.p === "1" ? "parent" : "child";
+  // p=1: 자녀가 보낸 링크로 들어온 보호자 · p=2: 보호자가 직접 입력 · 없음: 10대 본인
+  const view = sp.p === "1" ? "parent" : sp.p === "2" ? "guardian" : "child";
   return <ReportView report={r.data} view={view} justPaid={sp.paid === "1"} />;
 }
