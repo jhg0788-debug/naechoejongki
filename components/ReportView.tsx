@@ -41,7 +41,7 @@ export default function ReportView({ report, view, justPaid }: { report: ReportD
     const ch = await share({
       title: "내최종키 · 예상키 리포트",
       text: `엄마 아빠, 내 예상키 범위 나왔어 (${free.lo}~${free.hi}cm). 중앙값이랑 성장 곡선 나오는 상세 리포트 한번 봐줘!`,
-      url: parentUrl, button: "리포트 보기",
+      url: parentUrl, button: "리포트 보기", image: `/r/${report.id}/opengraph-image`,
     });
     track("parent_send", { report_id: report.id, props: { channel: ch } });
   };

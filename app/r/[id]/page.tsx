@@ -5,10 +5,18 @@ import ReportView, { type ReportData } from "@/components/ReportView";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "내최종키 · 예상키 리포트",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const r = isUuid(id) ? await api<ReportData>("getReport", { id }) : null;
+  const range = r?.ok ? `${r.data.free.lo}~${r.data.free.hi}cm` : "";
+  const title = range ? `예상키 범위 ${range} · 내최종키` : "내최종키 · 예상키 리포트";
+  return {
+    title,
+    description: "만 18세 무렵 예상키 범위. 질병관리청 2017 성장도표 기준 참고용 계산이에요.",
+    openGraph: { title, description: "상세 리포트에서 가장 가능성 높은 키와 성장 곡선을 볼 수 있어요." },
+    robots: { index: false, follow: false },
+  };
+}
 
 export default async function ReportPage({ params, searchParams }: {
   params: Promise<{ id: string }>;

@@ -13,7 +13,6 @@ export const metadata: Metadata = {
   openGraph: {
     title: "내최종키 · 내 예상키는 몇 cm?",
     description: "질문 10개, 1분이면 예상키 범위가 나와요.",
-    images: ["/og.png"],
     locale: "ko_KR",
     type: "website",
   },
