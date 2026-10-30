@@ -7,6 +7,7 @@ import { Shell } from "./Shell";
 import { captureSource, currentSrc, sessionId, track } from "@/lib/track";
 import { ageInYears } from "@/lib/predict";
 import { heightAtZ } from "@/lib/growth-chart";
+import { share } from "@/lib/share";
 
 type Sex = "m" | "f";
 interface S {
@@ -49,8 +50,20 @@ export default function Onboarding() {
   // 부모 타깃 영상(?v=p01 등)으로 들어오면 보호자 문구 + 결과에서 바로 결제로
   const [guardianMode, setGuardianMode] = useState(false);
   useEffect(() => {
-    const v = (new URLSearchParams(location.search).get("v") || currentSrc()).toLowerCase();
-    setGuardianMode(/^p\d/.test(v));
+    const q = new URLSearchParams(location.search);
+    const v = (q.get("v") || currentSrc()).toLowerCase();
+    // g=1: 만 14세 미만 아이가 부모님 폰으로 넘긴 링크. 성별·생년월은 미리 채워 둔다.
+    const handoff = q.get("g") === "1";
+    setGuardianMode(handoff || /^p\d/.test(v));
+    if (handoff) {
+      const sx = q.get("sx"), by = Number(q.get("by")), bm = Number(q.get("bm")), y = new Date().getFullYear();
+      setS(p => ({
+        ...p,
+        sex: sx === "m" || sx === "f" ? sx : null,
+        by: Number.isInteger(by) && by >= y - 18 && by <= y ? by : null,
+        bm: Number.isInteger(bm) && bm >= 1 && bm <= 12 ? bm : null,
+      }));
+    }
   }, []);
   const [err, setErr] = useState("");
   const tracked = useRef(false);
@@ -129,6 +142,21 @@ export default function Onboarding() {
     (id !== "pub" || !tooYoungForPuberty));
   const questions = visible.filter(id => id !== "intro" && id !== "calc");
   const qIdx = questions.indexOf(cur as any);
+
+  const [handoffSent, setHandoffSent] = useState(false);
+  const sendToGuardian = async () => {
+    const p = new URLSearchParams({ g: "1", v: currentSrc() || "direct" });
+    if (s.sex) p.set("sx", s.sex);
+    if (s.by) p.set("by", String(s.by));
+    if (s.bm) p.set("bm", String(s.bm));
+    const ch = await share({
+      title: "내최종키 · 예상키 확인",
+      text: "엄마 아빠, 내 최종 예상키 확인해 보고 싶어! 만 14세 미만이라 보호자 동의가 필요하대. 이 링크로 같이 해줘.",
+      url: `${location.origin}/?${p}`, button: "같이 하기",
+    });
+    setHandoffSent(true);
+    track("guardian_handoff", { props: { channel: ch } });
+  };
 
   const go = (d: 1 | -1) => {
     const i = visible.indexOf(cur);
@@ -211,7 +239,7 @@ export default function Onboarding() {
 
       {cur === "consent" && (
         <section className="screen">
-          <h2>보호자와 함께 입력해 주세요</h2>
+          <h2>{guardianMode || GUARDIAN_IDV ? "보호자 동의가 필요해요" : "여기부터는 부모님이 해 주세요"}</h2>
           <p className="note">만 {Math.floor(age ?? 0)}세는 만 14세 미만이라 개인정보 수집에 보호자 동의가 필요해요.</p>
           {GUARDIAN_IDV ? (
             <>
@@ -224,13 +252,19 @@ export default function Onboarding() {
                   : <button className="btn" disabled={ivBusy} onClick={startGuardianIdv}>{ivBusy ? "확인하는 중…" : "보호자 휴대폰 본인인증"}</button>}
               </div>
             </>
-          ) : (
+          ) : guardianMode ? (
             <>
               <label className="check">
                 <input type="checkbox" id="consent" checked={s.consent} onChange={e => set({ consent: e.target.checked })} />
-                <span>보호자가 <Link href="/privacy" target="_blank">개인정보처리방침</Link>을 확인했고, 함께 입력하고 있어요.</span>
+                <span>저는 이 아이의 보호자(법정대리인)이고, <Link href="/privacy" target="_blank">개인정보처리방침</Link>을 확인하고 동의해요.</span>
               </label>
               <div className="actions"><button className="btn" disabled={!s.consent} onClick={() => go(1)}>다음</button></div>
+            </>
+          ) : (
+            <>
+              <div className="why"><b>부모님 폰으로 이어서 해요</b><span>링크를 부모님께 보내면, 부모님이 동의하고 나머지를 입력해요. 결과는 부모님 화면에 바로 나와요.</span></div>
+              <div className="actions"><button className="btn" onClick={sendToGuardian}>부모님께 링크 보내기</button></div>
+              {handoffSent ? <p className="note" role="status">보냈어요. 부모님이 링크를 열면 이어서 할 수 있어요.</p> : null}
             </>
           )}
         </section>
