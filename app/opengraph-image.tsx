@@ -4,14 +4,14 @@ import { loadFont } from "@/lib/og-font";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const dynamic = "force-dynamic";
-export const alt = "내최종키 · 내 최종 예상키, 범위로 확인";
+export const alt = "내최종키 · 우리 아이 최종 키, 범위로 확인";
 
 // 쇼츠 고정댓글·설명란 링크를 붙였을 때 뜨는 미리보기 카드
 export default async function Image() {
   const brand = "내최종키";
-  const line1 = "내 최종 예상키,";
-  const line2 = "범위로 확인해 봐";
-  const sub = "부모 키 · 지금 키 · 질병관리청 공식 성장도표 · 만 0~17세 · 1분";
+  const line1 = "우리 아이 최종 키,";
+  const line2 = "범위로 확인해 보세요";
+  const sub = "엄마·아빠 키 · 아이 지금 키 · 질병관리청 공식 성장도표 · 만 0~17세 · 1분";
   const [display, body] = await Promise.all([
     loadFont("Black Han Sans", brand + line1 + line2),
     loadFont("Noto Sans KR", sub, 700),
@@ -32,7 +32,7 @@ export default async function Image() {
         </div>
         <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "64px 72px", justifyContent: "space-between" }}>
           <div style={{ fontFamily: "Display", fontSize: 44, color: "#13202A" }}>{brand}</div>
-          <div style={{ display: "flex", flexDirection: "column", fontFamily: "Display", fontSize: 104, color: "#13202A", lineHeight: 1.15 }}>
+          <div style={{ display: "flex", flexDirection: "column", fontFamily: "Display", fontSize: 92, color: "#13202A", lineHeight: 1.15 }}>
             <div>{line1}</div>
             <div style={{ color: "#FF5A36" }}>{line2}</div>
           </div>

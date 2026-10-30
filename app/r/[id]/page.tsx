@@ -29,6 +29,6 @@ export default async function ReportPage({ params, searchParams }: {
   const r = await api<ReportData>("getReport", { id });
   if (!r.ok) notFound();
   // p=1: 자녀가 보낸 링크로 들어온 보호자 · p=2: 보호자가 직접 입력 · 없음: 10대 본인
-  const view = sp.p === "1" ? "parent" : sp.p === "2" ? "guardian" : "child";
+  const view = sp.p === "1" ? "parent" : "guardian";
   return <ReportView report={r.data} view={view} justPaid={sp.paid === "1"} />;
 }

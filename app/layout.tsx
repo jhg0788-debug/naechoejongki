@@ -9,10 +9,10 @@ const site = (process.env.NEXT_PUBLIC_SITE_URL
 export const metadata: Metadata = {
   metadataBase: new URL(site),
   title: "내최종키 · 예상키 범위 확인",
-  description: "부모님 키와 지금 키, 사춘기 단계로 만 18세 무렵 예상키 범위를 확인해요. 질병관리청 공식 성장도표 기준 참고용 서비스.",
+  description: "엄마·아빠 키와 아이의 지금 키, 사춘기 단계로 만 18세 무렵 예상키 범위를 확인해요. 질병관리청 공식 성장도표 기준 참고용 서비스.",
   openGraph: {
-    title: "내최종키 · 내 예상키는 몇 cm?",
-    description: "질문 10개, 1분이면 예상키 범위가 나와요.",
+    title: "내최종키 · 우리 아이 최종 키는?",
+    description: "질문 10개, 1분이면 아이 예상키 범위가 나와요.",
     locale: "ko_KR",
     type: "website",
   },
