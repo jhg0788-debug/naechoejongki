@@ -19,7 +19,7 @@ const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SE
 const env = (k: string) => Deno.env.get(k) ?? "";
 
 const PRODUCT = { id: "report_single", name: "내최종키 상세 리포트", amount: 4900 };
-const CLIENT_EVENTS = new Set(["landing", "start", "step", "share_friend", "parent_send", "parent_open", "pay_view"]);
+const CLIENT_EVENTS = new Set(["landing", "start", "step", "share_friend", "parent_send", "parent_open", "pay_view", "guardian_handoff"]);
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-client-info",

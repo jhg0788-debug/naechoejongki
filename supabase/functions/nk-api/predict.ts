@@ -116,12 +116,16 @@ export function predict(x: Inputs, now = new Date()): FullResult {
   }
   if (Math.abs(mph - pctPred) > 8) half += 1;
 
-  const lo = Math.round(Math.max(x.height, median - half));
-  // 사춘기 후반엔 남은 성장이 작으므로 위쪽 끝을 지금 키 기준으로 막는다
+  // 사춘기 후반엔 남은 성장이 작으므로 지금 키 + 최대치로 막는다.
+  // 막힐 때는 범위 폭은 유지하고 중앙값을 아래로 옮긴다 (예: 한창 사춘기인데 지금 키가 작은 경우)
   const maxAdd = (x.sex === "m" ? [Infinity, Infinity, 16, 5] : [Infinity, Infinity, 9, 3])[x.puberty];
-  const hi = Math.round(Math.max(lo + 1, Math.min(median + half, x.height + maxAdd)));
+  const cap = x.height + maxAdd;
+  const capped = median + half > cap;
+  if (capped) median = Math.max(x.height + minAdd, Math.min(median, cap - half));
+  const lo = Math.round(Math.max(x.height, median - half));
+  const hi = Math.round(Math.max(lo + 2, Math.min(median + half, cap)));
   const peerTopPct = Math.max(1, Math.min(99, 100 - Math.round(normCdf(zNow) * 100)));
-  const confidence = half <= 3.5 ? "높음" : half <= 5 ? "보통" : "낮음";
+  const confidence = capped ? (half <= 5 ? "보통" : "낮음") : half <= 3.5 ? "높음" : half <= 5 ? "보통" : "낮음";
 
   const score = [0, 1, 2, 3, 3][x.sleep] + x.exercise + x.milk; // 0~9
   const habitPos = 0.2 + 0.6 * (score / 9);
@@ -137,7 +141,7 @@ export function predict(x: Inputs, now = new Date()): FullResult {
     toGo: Math.round((median - x.height) * 10) / 10,
     zNow, zFinal: zAt(x.sex, 18, median),
     habitPos, habitLabel,
-    wide: half >= 5, velocityFlag, halfWidth: half,
+    wide: half >= 5 || capped, velocityFlag, halfWidth: half,
   };
 }
 
