@@ -4,6 +4,7 @@ import { loadFont } from "@/lib/og-font";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+export const dynamic = "force-dynamic";
 export const alt = "내최종키 예상키 리포트";
 
 type R = { sex: "m" | "f"; height: number; free: { lo: number; hi: number; ageYears: number; ageMonths: number } };
@@ -65,6 +66,6 @@ export default async function Image({ params }: { params: Promise<{ id: string }
         </div>
       </div>
     ),
-    { ...size, fonts },
+    fonts.length ? { ...size, fonts } : size,
   );
 }

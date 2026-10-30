@@ -3,6 +3,7 @@ import { loadFont } from "@/lib/og-font";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+export const dynamic = "force-dynamic";
 export const alt = "내최종키 · 내 최종 예상키, 범위로 확인";
 
 // 쇼츠 고정댓글·설명란 링크를 붙였을 때 뜨는 미리보기 카드
@@ -39,6 +40,6 @@ export default async function Image() {
         </div>
       </div>
     ),
-    { ...size, fonts },
+    fonts.length ? { ...size, fonts } : size,
   );
 }
