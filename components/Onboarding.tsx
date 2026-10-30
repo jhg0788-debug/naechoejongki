@@ -135,11 +135,17 @@ export default function Onboarding() {
     track("landing", { props: { path: location.pathname } });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const tooYoungForPuberty = age != null && age < (s.sex === "f" ? 7 : 8);
-  const visible = ORDER.filter(id =>
-    (id !== "consent" || (age != null && age < 14)) &&
-    (id !== "last" || age == null || age >= 1) &&
-    (id !== "pub" || !tooYoungForPuberty));
+  // 다음 화면은 방금 고른 값까지 반영해서 정한다 (생년월 직후 동의 화면 등)
+  const visibleFor = (st: S) => {
+    const a = st.by && st.bm ? ageInYears(st.by, st.bm, now) : null;
+    const tooYoung = a != null && a < (st.sex === "f" ? 7 : 8);
+    return ORDER.filter(id =>
+      (id !== "consent" || (a != null && a < 14)) &&
+      (id !== "last" || a == null || a >= 1) &&
+      (id !== "pub" || !tooYoung));
+  };
+  const visible = visibleFor(s);
+  const tooYoungForPuberty = !visible.includes("pub");
   const questions = visible.filter(id => id !== "intro" && id !== "calc");
   const qIdx = questions.indexOf(cur as any);
 
@@ -158,16 +164,17 @@ export default function Onboarding() {
     track("guardian_handoff", { props: { channel: ch } });
   };
 
-  const go = (d: 1 | -1) => {
-    const i = visible.indexOf(cur);
-    const next = visible[Math.max(0, Math.min(visible.length - 1, i + d))];
+  const go = (d: 1 | -1, st: S = s) => {
+    const vis = visibleFor(st);
+    const i = vis.indexOf(cur);
+    const next = vis[Math.max(0, Math.min(vis.length - 1, i + d))];
     setErr("");
     setCur(next);
     if (d === 1 && next !== "calc") track("step", { props: { q: next } });
     window.scrollTo(0, 0);
   };
   const set = (patch: Partial<S>) => setS(p => ({ ...p, ...patch }));
-  const pick = (patch: Partial<S>) => { set(patch); setTimeout(() => go(1), 180); };
+  const pick = (patch: Partial<S>) => { set(patch); const st = { ...s, ...patch }; setTimeout(() => go(1, st), 180); };
 
   // 결과 계산 & 저장
   useEffect(() => {
@@ -235,7 +242,7 @@ export default function Onboarding() {
           onPick={v => pick({ sex: v as Sex, pub: null })} />
       )}
 
-      {cur === "birth" && <Birth s={s} now={now} onDone={(by, bm) => { set({ by, bm }); go(1); }} />}
+      {cur === "birth" && <Birth s={s} now={now} onDone={(by, bm) => { set({ by, bm }); go(1, { ...s, by, bm }); }} />}
 
       {cur === "consent" && (
         <section className="screen">
