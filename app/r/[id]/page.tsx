@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const title = range ? `예상키 범위 ${range} · 내최종키` : "내최종키 · 예상키 리포트";
   return {
     title,
-    description: "만 18세 무렵 예상키 범위. 질병관리청 2017 성장도표 기준 참고용 계산이에요.",
+    description: "만 18세 무렵 예상키 범위. 질병관리청 공식 성장도표 기준 참고용 계산이에요.",
     openGraph: { title, description: "상세 리포트에서 가장 가능성 높은 키와 성장 곡선을 볼 수 있어요." },
     robots: { index: false, follow: false },
   };

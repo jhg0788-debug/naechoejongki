@@ -11,7 +11,7 @@ export default async function Image() {
   const brand = "내최종키";
   const line1 = "내 최종 예상키,";
   const line2 = "범위로 확인해 봐";
-  const sub = "부모 키 · 지금 키 · 질병관리청 2017 성장도표 · 만 0~17세 · 1분";
+  const sub = "부모 키 · 지금 키 · 질병관리청 공식 성장도표 · 만 0~17세 · 1분";
   const [display, body] = await Promise.all([
     loadFont("Black Han Sans", brand + line1 + line2),
     loadFont("Noto Sans KR", sub, 700),

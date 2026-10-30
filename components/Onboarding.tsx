@@ -192,7 +192,7 @@ export default function Onboarding() {
               )}
               <div className="facts">
                 <div><b>공식</b><span>중간부모키 (아빠 키 + 엄마 키 ± 13) ÷ 2</span></div>
-                <div><b>도표</b><span>질병관리청 2017 소아청소년 성장도표 백분위</span></div>
+                <div><b>도표</b><span>질병관리청 소아청소년 성장도표 백분위 (현행 공식 기준)</span></div>
                 <div><b>보정</b><span>사춘기 단계에 따라 두 값의 비중 조정</span></div>
               </div>
             </div>
