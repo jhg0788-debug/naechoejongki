@@ -7,6 +7,7 @@ import { Shell } from "./Shell";
 import { captureSource, currentSrc, sessionId, track } from "@/lib/track";
 import { ageInYears } from "@/lib/predict";
 import { heightAtZ } from "@/lib/growth-chart";
+import { addRecord } from "@/lib/kids";
 
 type Sex = "m" | "f";
 interface S {
@@ -162,6 +163,9 @@ export default function Onboarding() {
         });
         const body = await res.json();
         if (!res.ok) throw new Error(body?.error || "계산하지 못했어요.");
+        // 이 기기의 '내 아이 기록장'에 남긴다
+        addRecord({ sex: s.sex!, by: s.by!, bm: s.bm!, dad: s.dad!, mom: s.mom!, weight: s.w ?? null,
+          puberty: tooYoungForPuberty ? 0 : (s.pub ?? 0), sleep: s.sleep ?? 2, ex: s.ex ?? 1, milk: s.milk ?? 1, height: s.h! }, body.id, body.free);
         const wait = Math.max(0, 1800 - (Date.now() - started));
         setTimeout(() => { if (!cancelled) router.push(`/r/${body.id}?p=2`); }, wait);
       } catch (e: any) {

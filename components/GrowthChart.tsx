@@ -1,12 +1,21 @@
 import { heightAtZ, type Sex } from "@/lib/growth-chart";
 
-/** 성장도표 3·50·97 백분위 + 지금 위치에서 만 18세까지 예상 경로 */
-export function GrowthChart({ sex, age, height, zNow, zFinal, lo, hi }: {
-  sex: Sex; age: number; height: number; zNow: number; zFinal: number; lo: number; hi: number;
+/** 지금 위치에서 만 18세까지 가장 가능성 높은 경로 위의 키 */
+export function pathAt(sex: Sex, age: number, zNow: number, zFinal: number, a: number) {
+  const t = Math.min(1, Math.max(0, (a - age) / (18 - age || 1)));
+  return heightAtZ(sex, a, zNow + (zFinal - zNow) * t);
+}
+
+/** 성장도표 3·50·97 백분위 + 측정 기록 점 + (있으면) 만 18세까지 예상 경로 */
+export function GrowthChart({ sex, age, height, zNow, zFinal, lo, hi, points }: {
+  sex: Sex; age: number; height: number; lo: number; hi: number;
+  zNow?: number; zFinal?: number;
+  points?: { age: number; height: number }[];
 }) {
   const W = 340, H = 230, L = 34, R = 14, T = 12, B = 26, a1 = 18;
-  // 만 5세 미만이면 출생부터 그린다
-  const a0 = age < 5 ? 0 : 5;
+  const first = Math.min(age, ...(points ?? []).map(p => p.age));
+  // 만 5세 미만 기록이 있으면 출생부터 그린다
+  const a0 = first < 5 ? 0 : 5;
   const h0 = a0 === 0 ? 40 : sex === "m" ? 100 : 95, h1 = sex === "m" ? 200 : 185;
   const X = (a: number) => L + ((a - a0) / (a1 - a0)) * (W - L - R);
   const Y = (h: number) => T + ((h1 - h) / (h1 - h0)) * (H - T - B);
@@ -16,13 +25,15 @@ export function GrowthChart({ sex, age, height, zNow, zFinal, lo, hi }: {
     return d;
   };
   let path = "";
-  for (let k = 0; k <= 24; k++) {
-    const t = k / 24, a = age + (18 - age) * t;
-    path += (path ? "L" : "M") + X(a).toFixed(1) + "," + Y(heightAtZ(sex, a, zNow + (zFinal - zNow) * t)).toFixed(1);
-  }
-  const gridStep = 20;
+  if (zNow != null && zFinal != null)
+    for (let k = 0; k <= 24; k++) {
+      const a = age + (18 - age) * (k / 24);
+      path += (path ? "L" : "M") + X(a).toFixed(1) + "," + Y(pathAt(sex, age, zNow, zFinal, a)).toFixed(1);
+    }
+  const pts = (points ?? []).slice().sort((p, q) => p.age - q.age);
+  const trail = pts.map((p, i) => (i ? "L" : "M") + X(p.age).toFixed(1) + "," + Y(p.height).toFixed(1)).join("");
   const grid: number[] = [];
-  for (let h = Math.ceil(h0 / gridStep) * gridStep; h <= h1; h += gridStep) grid.push(h);
+  for (let h = Math.ceil(h0 / 20) * 20; h <= h1; h += 20) grid.push(h);
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} width="100%" role="img" aria-label={`성장 곡선: 3·50·97 백분위와 만 18세 예상 범위 ${lo}~${hi}cm`}>
@@ -39,7 +50,9 @@ export function GrowthChart({ sex, age, height, zNow, zFinal, lo, hi }: {
       <path d={line(-1.881)} fill="none" stroke="var(--muted)" strokeWidth={1} strokeDasharray="3 3" />
       <path d={line(0)} fill="none" stroke="var(--muted)" strokeWidth={1.5} />
       <path d={line(1.881)} fill="none" stroke="var(--muted)" strokeWidth={1} strokeDasharray="3 3" />
-      <path d={path} fill="none" stroke="var(--accent)" strokeWidth={2.5} strokeLinecap="round" />
+      {path ? <path d={path} fill="none" stroke="var(--accent)" strokeWidth={2.5} strokeLinecap="round" /> : null}
+      {pts.length > 1 ? <path d={trail} fill="none" stroke="var(--ink)" strokeWidth={1.5} /> : null}
+      {pts.map((p, i) => <circle key={i} cx={X(p.age)} cy={Y(p.height)} r={3.5} fill="var(--ink)" stroke="var(--surface)" strokeWidth={1.5} />)}
       <circle cx={X(age)} cy={Y(height)} r={5} fill="var(--accent)" stroke="var(--surface)" strokeWidth={2} />
       <text x={X(age) + 8} y={Y(height) + 14} fontSize={10} fill="var(--ink)">지금 {height}</text>
     </svg>

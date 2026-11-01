@@ -30,7 +30,7 @@ export function Shell({ children, progress, onBack }: {
       <header className="top">
         <div className="toprow">
           <Link href="/" className="brand"><i aria-hidden="true" />내최종키</Link>
-          {onBack ? <button className="back" onClick={onBack}>← 이전</button> : null}
+          {onBack ? <button className="back" onClick={onBack}>← 이전</button> : <Link href="/kids" className="back">내 아이 기록</Link>}
         </div>
         {progress ? (
           <div className="tape" role="progressbar" aria-valuemin={1} aria-valuemax={progress.total} aria-valuenow={progress.idx}>

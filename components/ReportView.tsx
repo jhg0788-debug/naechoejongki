@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Shell } from "./Shell";
-import { GrowthChart } from "./GrowthChart";
+import { GrowthChart, pathAt } from "./GrowthChart";
 import { share } from "@/lib/share";
 import { captureSource, sessionId, track } from "@/lib/track";
 import type { FreeResult, FullResult } from "@/lib/predict";
@@ -109,7 +109,11 @@ export default function ReportView({ report, view, justPaid }: { report: ReportD
           </div>
         )}
 
-        <Link className="btn text" href="/">{view === "child" ? "처음부터 다시 하기" : "다른 자녀도 확인하기"}</Link>
+        <div className="statrow noprint">
+          <Link className="btn ghost" href="/kids">내 아이 기록장</Link>
+          <button className="btn ghost" onClick={() => window.print()}>PDF로 저장</button>
+        </div>
+        <Link className="btn text noprint" href="/">{view === "child" ? "처음부터 다시 하기" : "다른 자녀도 확인하기"}</Link>
         <DeleteReport id={report.id} />
       </section>
     </Shell>
@@ -195,6 +199,8 @@ function Detail({ full, report }: { full: FullResult; report: ReportData }) {
           <span><i style={{ background: "var(--band)", height: 10 }} />만 18세 예상 범위</span>
         </div>
       </div>
+      <Schedule full={full} sex={report.sex} age={age} height={report.height} />
+      <Signals full={full} />
       <div className="habit">
         <div className="label" style={{ margin: 0 }}>생활습관 위치 · 지금 습관은 <b>{full.habitLabel}</b>에 가까워요</div>
         <div className="meter" style={{ height: 14, marginBottom: 8 }} aria-hidden="true">
@@ -213,6 +219,59 @@ function Detail({ full, report }: { full: FullResult; report: ReportData }) {
         </div>
       ) : null}
       {h.weight ? <p className="note">몸무게 {h.weight}kg은 월별 기록용으로만 표시돼요.</p> : null}
+    </div>
+  );
+}
+
+/** 생일마다 가장 가능성 높은 경로 위의 키. 남은 해가 많으면 2년 간격 */
+function Schedule({ full, sex, age, height }: { full: FullResult; sex: "m" | "f"; age: number; height: number }) {
+  const start = Math.floor(age) + 1;
+  if (start > 18) return null;
+  const step = 18 - start + 1 > 8 ? 2 : 1;
+  const ages: number[] = [];
+  for (let a = start; a < 18; a += step) ages.push(a);
+  ages.push(18);
+  const at = (a: number) => pathAt(sex, age, full.zNow, full.zFinal, a);
+  const nextYear = age < 17 ? at(age + 1) - height : null;
+  return (
+    <div className="sched">
+      <div className="label">나이별 예상 키 <small>가장 가능성 높은 경로 기준</small></div>
+      {nextYear != null ? <p className="note">앞으로 1년 동안 약 <b>{nextYear.toFixed(1)}cm</b> 자라는 경로예요. 1년 뒤 재서 비교해 보세요.</p> : null}
+      <table>
+        <thead><tr><th>나이</th><th>예상 키</th><th>지금부터</th></tr></thead>
+        <tbody>
+          {ages.map(a => (
+            <tr key={a}><td>만 {a}세</td><td>{at(a).toFixed(1)}cm</td><td>+{(at(a) - height).toFixed(1)}</td></tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="note">실제 키는 해마다 이 경로 위아래로 움직여요. 몇 달 단위로 다시 재면 경로가 더 정확해져요.</p>
+    </div>
+  );
+}
+
+/** 진료로 확인해 볼 만한 신호. 진단이 아니라 일반적인 확인 기준과 해당 여부만 보여준다 */
+function Signals({ full }: { full: FullResult }) {
+  const items: { t: string; on: boolean | null }[] = [
+    { t: "지금 키가 또래 100명 중 작은 쪽 3명 안에 들어요", on: full.zNow < -1.881 },
+    { t: "작년 대비 자란 양이 또래 평균과 많이 달라요", on: full.velocityFlag },
+    { t: "지금 키로 본 예상치가 엄마·아빠 키로 본 예상치보다 8cm 넘게 낮아요", on: full.pctPred < full.mph - 8 },
+    { t: "만 4세 이후 사춘기 전인데 1년에 4cm 미만으로 자랐어요", on: null },
+    { t: "사춘기 변화가 여아 만 8세 전, 남아 만 9세 전에 시작됐어요", on: null },
+  ];
+  const any = items.some(i => i.on);
+  return (
+    <div className="signals">
+      <div className="label">진료로 확인해 볼 신호</div>
+      <ul>
+        {items.map(i => (
+          <li key={i.t} className={i.on ? "on" : ""}>
+            <span>{i.t}</span>
+            <em>{i.on == null ? "직접 확인" : i.on ? "해당" : "해당 없음"}</em>
+          </li>
+        ))}
+      </ul>
+      <p className="note">{any ? "해당하는 항목이 있어요. " : ""}하나라도 해당되면 소아청소년과에서 성장 상태를 확인해 보세요. 이 목록은 진단이 아니에요.</p>
     </div>
   );
 }
