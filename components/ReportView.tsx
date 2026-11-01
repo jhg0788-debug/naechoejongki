@@ -113,6 +113,9 @@ export default function ReportView({ report, view, justPaid }: { report: ReportD
           <Link className="btn ghost" href="/kids">내 아이 기록장</Link>
           <button className="btn ghost" onClick={() => window.print()}>PDF로 저장</button>
         </div>
+        <a className="btn ghost noprint" href={`/r/${report.id}/opengraph-image`} target="_blank" rel="noopener"
+          onClick={() => track("share_friend", { report_id: report.id, props: { channel: "image" } })}>결과 이미지 저장</a>
+        <p className="note noprint">이미지를 길게 눌러 저장하면 카톡·인스타에 올릴 수 있어요. 아이 이름은 들어가지 않아요.</p>
         <Link className="btn text noprint" href="/">{view === "child" ? "처음부터 다시 하기" : "다른 자녀도 확인하기"}</Link>
         <DeleteReport id={report.id} />
       </section>

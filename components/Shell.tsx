@@ -10,6 +10,7 @@ export function Disclaimer() {
         <Link href="/terms">이용약관</Link>
         <Link href="/privacy"><b>개인정보처리방침</b></Link>
         <Link href="/refund">환불정책</Link>
+        <Link href="/guide">성장 가이드</Link>
       </nav>
       <div className="biz">
         {orPending(BIZ.name)} · 대표 {orPending(BIZ.ceo)} · 사업자등록번호 {orPending(BIZ.regNo)}<br />
