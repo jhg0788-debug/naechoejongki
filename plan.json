@@ -7,7 +7,8 @@
   "vid": "gALoA9Gz_5c",
   "title": "창고 꽉 찼다고요? 바닥 말고 높이를 쓰세요",
   "pin": "📌 창고 사진 한 장이면 견적 드립니다!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi\n궁금한 점은 댓글로 남겨주세요 👇",
-  "uploaded": true
+  "uploaded": true,
+  "commented": true
  },
  {
   "date": "2026-11-10",
@@ -17,7 +18,8 @@
   "vid": "wlF76WrBAT0",
   "title": "중고 랙 살 때 여기만 보세요",
   "pin": "📌 창고 사진 한 장이면 견적 드립니다!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi\n궁금한 점은 댓글로 남겨주세요 👇",
-  "uploaded": true
+  "uploaded": true,
+  "commented": true
  },
  {
   "date": "2026-11-10",
@@ -27,11 +29,12 @@
   "vid": "CrBuQ4p0Y7A",
   "title": "빈 창고가 랙 창고로 바뀌는 하루",
   "pin": "📌 창고 사진 한 장이면 견적 드립니다!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi\n궁금한 점은 댓글로 남겨주세요 👇",
-  "uploaded": true
+  "uploaded": true,
+  "commented": true
  },
  {
   "date": "2026-11-11",
-  "time": "오후 12:00",
+  "time": "오후 6:40(즉시공개)",
   "key": "wk03",
   "type": "short",
   "file": "wk_03.mp4",
@@ -40,20 +43,9 @@
   "tag": "#중고랙 #중고파렛트랙 #랙점검",
   "playlist": "성우 현장 숏츠",
   "pin": "📌 지금 쓰는 랙 상태가 궁금하면 사진 보내주세요. 어디부터 봐야 할지 알려드립니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
-  "uploaded": false
- },
- {
-  "date": "2026-11-11",
-  "time": "오후 6:00",
-  "key": "fieldlog",
-  "type": "long",
-  "file": "fieldlog.mp4",
-  "title": "2026 가을 성우 현장일지 | 대구·양산·청주·천안·화성 파렛트랙 납품·설치 기록",
-  "line": "경산에서 출발한 성우종합유통의 랙이 이번 가을 간 곳들. 대구 칠곡 10조 납품부터 양산 4M 기둥 직접 납품, 청주 단골 고객사, 천안 5톤 상차, 화성 맞춤 기둥까지 블로그에 기록한 현장을 모았습니다.",
-  "tag": "#파렛트랙납품 #현장일지 #중고파렛트랙",
-  "playlist": "성우종합유통 현장·브랜드 영상",
-  "pin": "📌 이번 가을 다녀온 현장들입니다. 우리 지역도 오나요? 댓글로 지역을 남겨주세요!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
-  "uploaded": false
+  "uploaded": true,
+  "vid": "P3fIrFydGS8",
+  "commented": true
  },
  {
   "date": "2026-11-11",
@@ -66,7 +58,8 @@
   "tag": "#창고정리 #대구랙 #방문견적",
   "playlist": "성우 현장 숏츠",
   "pin": "📌 우리 창고도 이렇게 될까요? 지역과 창고 크기를 남겨주시면 답해드립니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
-  "uploaded": false
+  "uploaded": true,
+  "vid": "EQSLbqJk7bc"
  },
  {
   "date": "2026-11-12",
@@ -84,6 +77,19 @@
  {
   "date": "2026-11-12",
   "time": "오후 6:00",
+  "key": "fieldlog",
+  "type": "long",
+  "file": "fieldlog.mp4",
+  "title": "2026 가을 성우 현장일지 | 대구·양산·청주·천안·화성 파렛트랙 납품·설치 기록",
+  "line": "경산에서 출발한 성우종합유통의 랙이 이번 가을 간 곳들. 대구 칠곡 10조 납품부터 양산 4M 기둥 직접 납품, 청주 단골 고객사, 천안 5톤 상차, 화성 맞춤 기둥까지 블로그에 기록한 현장을 모았습니다.",
+  "tag": "#파렛트랙납품 #현장일지 #중고파렛트랙",
+  "playlist": "성우종합유통 현장·브랜드 영상",
+  "pin": "📌 이번 가을 다녀온 현장들입니다. 우리 지역도 오나요? 댓글로 지역을 남겨주세요!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": true
+ },
+ {
+  "date": "2026-11-12",
+  "time": "오후 9:00",
   "key": "wk06",
   "type": "short",
   "file": "wk_06.mp4",
@@ -95,8 +101,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-12",
-  "time": "오후 9:00",
+  "date": "2026-11-13",
+  "time": "오후 12:00",
   "key": "wk07",
   "type": "short",
   "file": "wk_07.mp4",
@@ -109,7 +115,7 @@
  },
  {
   "date": "2026-11-13",
-  "time": "오후 12:00",
+  "time": "오후 6:00",
   "key": "wk08",
   "type": "short",
   "file": "wk_08.mp4",
@@ -122,7 +128,7 @@
  },
  {
   "date": "2026-11-13",
-  "time": "오후 6:00",
+  "time": "오후 9:00",
   "key": "wk09",
   "type": "short",
   "file": "wk_09.mp4",
@@ -134,8 +140,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-13",
-  "time": "오후 9:00",
+  "date": "2026-11-14",
+  "time": "오후 12:00",
   "key": "wk10",
   "type": "short",
   "file": "wk_10.mp4",
@@ -148,7 +154,7 @@
  },
  {
   "date": "2026-11-14",
-  "time": "오후 12:00",
+  "time": "오후 6:00",
   "key": "wk11",
   "type": "short",
   "file": "wk_11.mp4",
@@ -161,7 +167,7 @@
  },
  {
   "date": "2026-11-14",
-  "time": "오후 6:00",
+  "time": "오후 9:00",
   "key": "wk12",
   "type": "short",
   "file": "wk_12.mp4",
@@ -173,8 +179,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-14",
-  "time": "오후 9:00",
+  "date": "2026-11-15",
+  "time": "오후 12:00",
   "key": "wk13",
   "type": "short",
   "file": "wk_13.mp4",
@@ -187,7 +193,7 @@
  },
  {
   "date": "2026-11-15",
-  "time": "오후 12:00",
+  "time": "오후 6:00",
   "key": "wk00",
   "type": "short",
   "file": "wk_00.mp4",
@@ -200,7 +206,7 @@
  },
  {
   "date": "2026-11-15",
-  "time": "오후 6:00",
+  "time": "오후 9:00",
   "key": "wk01",
   "type": "short",
   "file": "wk_01.mp4",
@@ -209,19 +215,6 @@
   "tag": "#대구랙 #파렛트랙납품 #창고랙",
   "playlist": "성우 현장 숏츠",
   "pin": "📌 우리 창고도 이렇게 될까요? 지역과 창고 크기를 남겨주시면 답해드립니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
-  "uploaded": false
- },
- {
-  "date": "2026-11-15",
-  "time": "오후 9:00",
-  "key": "wk02",
-  "type": "short",
-  "file": "wk_02.mp4",
-  "title": "랙 견적 받는 법, 딱 세 단계 #랙설치 #shorts",
-  "line": "창고 사진과 대략의 가로·세로만 보내주세요. 대구·경산은 직접 실측, 그 외 지역은 도면으로 배치해 드립니다.",
-  "tag": "#랙설치 #랙견적 #창고랙",
-  "playlist": "성우 현장 숏츠",
-  "pin": "📌 창고 사진 한 장이면 견적 드립니다!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
   "uploaded": false
  },
  {
@@ -633,6 +626,19 @@
   "tag": "#랙철거",
   "playlist": "랙반장의 창고 상식 (숏츠)",
   "pin": "📌 우리 창고엔 어떤 랙이 맞을까요? 댓글로 물어보세요!\n창고 사진 한 장이면 견적 드립니다.\n📞 010-4446-4302 (전화·문자 24시간)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-11-27",
+  "time": "오후 12:00",
+  "key": "wk02",
+  "type": "short",
+  "file": "wk_02.mp4",
+  "title": "랙 견적 받는 법, 딱 세 단계 #랙설치 #shorts",
+  "line": "창고 사진과 대략의 가로·세로만 보내주세요. 대구·경산은 직접 실측, 그 외 지역은 도면으로 배치해 드립니다.",
+  "tag": "#랙설치 #랙견적 #창고랙",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 창고 사진 한 장이면 견적 드립니다!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
   "uploaded": false
  }
 ]
