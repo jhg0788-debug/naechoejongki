@@ -268,8 +268,21 @@
   "uploaded": true
  },
  {
+  "key": "reborn",
+  "type": "short",
+  "file": "reborn.mp4",
+  "title": "중고 랙이 다시 태어나는 곳 | 매입·세척·검수·출고 #중고랙 #shorts",
+  "line": "쓰던 랙을 매입해 분해·세척·건조하고, 1·2차 검수를 통과한 A급만 다시 현장으로 내보냅니다.",
+  "tag": "#중고랙 #랙재생 #중고파렛트랙",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 버리려던 랙 있으신가요? 사진 보내주시면 매입 가능 여부 알려드립니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false,
   "date": "2026-11-17",
-  "time": "오후 9:00",
+  "time": "오후 9:00"
+ },
+ {
+  "date": "2026-11-18",
+  "time": "오후 12:00",
   "key": "rbj08",
   "type": "short",
   "file": "rbj_08.mp4",
@@ -282,7 +295,7 @@
  },
  {
   "date": "2026-11-18",
-  "time": "오후 12:00",
+  "time": "오후 6:00",
   "key": "rbj01",
   "type": "short",
   "file": "rbj_01.mp4",
@@ -294,8 +307,21 @@
   "uploaded": false
  },
  {
+  "key": "mart",
+  "type": "short",
+  "file": "mart.mp4",
+  "title": "마트 개점 D-3, 진열대 철거부터 재설치까지 #마트진열대 #shorts",
+  "line": "개점 날짜는 못 미룹니다. 기존 진열대 철거, 바닥 정리, 곤돌라 진열대 재설치까지 한 팀이 일정에 맞춰 끝냅니다.",
+  "tag": "#마트진열대 #매장인테리어 #진열대철거",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 개점·리뉴얼 일정이 있으신가요? 날짜 알려주시면 일정 맞춰드립니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false,
   "date": "2026-11-18",
-  "time": "오후 6:00",
+  "time": "오후 9:00"
+ },
+ {
+  "date": "2026-11-19",
+  "time": "오후 12:00",
   "key": "rbj09",
   "type": "short",
   "file": "rbj_09.mp4",
@@ -307,8 +333,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-18",
-  "time": "오후 9:00",
+  "date": "2026-11-19",
+  "time": "오후 6:00",
   "key": "rbj15",
   "type": "short",
   "file": "rbj_15.mp4",
@@ -320,7 +346,20 @@
   "uploaded": false
  },
  {
+  "key": "rolltainer",
+  "type": "short",
+  "file": "rolltainer.mp4",
+  "title": "랙만 파는 곳 아닙니다 | 롤테이너·중고 파렛트 #롤테이너 #shorts",
+  "line": "보관과 운반을 오가는 롤테이너, 랙에 올릴 1,100×1,100 파렛트까지. 신품·중고 수량 맞춰 드립니다.",
+  "tag": "#롤테이너 #중고파렛트 #물류용품",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 필요한 롤테이너·파렛트 수량을 댓글이나 문자로 남겨주세요!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false,
   "date": "2026-11-19",
+  "time": "오후 9:00"
+ },
+ {
+  "date": "2026-11-20",
   "time": "오후 12:00",
   "key": "rbj22",
   "type": "short",
@@ -333,7 +372,7 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-19",
+  "date": "2026-11-20",
   "time": "오후 6:00",
   "key": "rbj02",
   "type": "short",
@@ -346,66 +385,27 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-19",
-  "time": "오후 9:00",
+  "key": "cleanout",
+  "type": "short",
+  "file": "cleanout.mp4",
+  "title": "폐업·이전 창고, 세 갈래로 한 번에 정리 #창고정리 #shorts",
+  "line": "쓸 랙은 매입, 옮길 진열대는 이전 설치, 남은 고철은 재생자원으로. 한 팀이 한 번에 비워드립니다.",
+  "tag": "#창고정리 #폐업정리 #랙매입",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 비워야 할 창고 사진 보내주세요. 정리 범위와 일정 잡아드립니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false,
+  "date": "2026-11-20",
+  "time": "오후 9:00"
+ },
+ {
+  "date": "2026-11-21",
+  "time": "오후 12:00",
   "key": "rbj10",
   "type": "short",
   "file": "rbj_10.mp4",
   "title": "창고 랙 안전 수칙 3가지",
   "line": "표시 하중 지키기, 랙에 올라가지 않기, 파손은 바로 알리기.",
   "tag": "#랙안전",
-  "playlist": "랙반장의 창고 상식 (숏츠)",
-  "pin": "📌 체크해 보셨나요? 우리 창고 상황을 댓글로 남겨주세요!\n창고 사진 한 장이면 견적 드립니다.\n📞 010-4446-4302 (전화·문자 24시간)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
-  "uploaded": false
- },
- {
-  "date": "2026-11-20",
-  "time": "오후 12:00",
-  "key": "rbj16",
-  "type": "short",
-  "file": "rbj_16.mp4",
-  "title": "작은 부품이 너무 많다면? → 경량랙",
-  "line": "작은 부품, 박스 물건은 경량랙으로 칸칸이 정리하세요.",
-  "tag": "#경량랙",
-  "playlist": "랙반장의 창고 상식 (숏츠)",
-  "pin": "📌 우리 창고엔 어떤 랙이 맞을까요? 댓글로 물어보세요!\n창고 사진 한 장이면 견적 드립니다.\n📞 010-4446-4302 (전화·문자 24시간)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
-  "uploaded": false
- },
- {
-  "date": "2026-11-20",
-  "time": "오후 6:00",
-  "key": "rbj23",
-  "type": "short",
-  "file": "rbj_23.mp4",
-  "title": "끝이 안 보이는 대형 공장 랙 시공",
-  "line": "넓은 공장 바닥에 열 단위로 시공한 실제 현장입니다.",
-  "tag": "#대형공장",
-  "playlist": "랙반장의 창고 상식 (숏츠)",
-  "pin": "📌 우리 창고도 이렇게 바뀔 수 있습니다!\n창고 사진 한 장이면 배치부터 견적까지 알려드려요.\n📞 010-4446-4302 (전화·문자 24시간)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
-  "uploaded": false
- },
- {
-  "date": "2026-11-20",
-  "time": "오후 9:00",
-  "key": "rbj03",
-  "type": "short",
-  "file": "rbj_03.mp4",
-  "title": "빔 안전핀은 없어도 된다? O/X",
-  "line": "빔 안전핀은 빔이 빠지지 않게 잡아 주는 핵심 부품입니다.",
-  "tag": "#랙안전",
-  "playlist": "랙반장의 창고 상식 (숏츠)",
-  "pin": "📌 정답 맞히셨나요? 댓글로 O/X 남겨주세요!\n궁금한 건 랙반장이 답해드립니다 👷\n📞 010-4446-4302 (전화·문자 24시간)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
-  "uploaded": false
- },
- {
-  "date": "2026-11-21",
-  "time": "오후 12:00",
-  "key": "rbj11",
-  "type": "short",
-  "file": "rbj_11.mp4",
-  "title": "창고 이전할 때 랙 체크 3가지",
-  "line": "철거 일정, 반출 동선, 매입 가능 여부를 먼저 확인하세요.",
-  "tag": "#창고이전",
   "playlist": "랙반장의 창고 상식 (숏츠)",
   "pin": "📌 체크해 보셨나요? 우리 창고 상황을 댓글로 남겨주세요!\n창고 사진 한 장이면 견적 드립니다.\n📞 010-4446-4302 (전화·문자 24시간)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
   "uploaded": false
@@ -421,8 +421,73 @@
   "uploaded": true
  },
  {
+  "key": "day24",
+  "type": "short",
+  "file": "day24.mp4",
+  "title": "성우종합유통의 24시간 #성우종합유통 #shorts",
+  "line": "새벽 상차부터 타지역 설치, 매입 실측, 세척장, 밤 견적 답장, 새벽 문자 접수까지. 어느 하루를 재구성했습니다.",
+  "tag": "#성우종합유통 #24시간상담 #전국출장",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 새벽이든 주말이든 문자 남겨주세요. 24시간 접수합니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false,
   "date": "2026-11-21",
+  "time": "오후 9:00"
+ },
+ {
+  "date": "2026-11-22",
+  "time": "오후 12:00",
+  "key": "rbj16",
+  "type": "short",
+  "file": "rbj_16.mp4",
+  "title": "작은 부품이 너무 많다면? → 경량랙",
+  "line": "작은 부품, 박스 물건은 경량랙으로 칸칸이 정리하세요.",
+  "tag": "#경량랙",
+  "playlist": "랙반장의 창고 상식 (숏츠)",
+  "pin": "📌 우리 창고엔 어떤 랙이 맞을까요? 댓글로 물어보세요!\n창고 사진 한 장이면 견적 드립니다.\n📞 010-4446-4302 (전화·문자 24시간)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-11-22",
+  "time": "오후 6:00",
+  "key": "rbj23",
+  "type": "short",
+  "file": "rbj_23.mp4",
+  "title": "끝이 안 보이는 대형 공장 랙 시공",
+  "line": "넓은 공장 바닥에 열 단위로 시공한 실제 현장입니다.",
+  "tag": "#대형공장",
+  "playlist": "랙반장의 창고 상식 (숏츠)",
+  "pin": "📌 우리 창고도 이렇게 바뀔 수 있습니다!\n창고 사진 한 장이면 배치부터 견적까지 알려드려요.\n📞 010-4446-4302 (전화·문자 24시간)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-11-22",
   "time": "오후 9:00",
+  "key": "rbj03",
+  "type": "short",
+  "file": "rbj_03.mp4",
+  "title": "빔 안전핀은 없어도 된다? O/X",
+  "line": "빔 안전핀은 빔이 빠지지 않게 잡아 주는 핵심 부품입니다.",
+  "tag": "#랙안전",
+  "playlist": "랙반장의 창고 상식 (숏츠)",
+  "pin": "📌 정답 맞히셨나요? 댓글로 O/X 남겨주세요!\n궁금한 건 랙반장이 답해드립니다 👷\n📞 010-4446-4302 (전화·문자 24시간)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-11-23",
+  "time": "오후 12:00",
+  "key": "rbj11",
+  "type": "short",
+  "file": "rbj_11.mp4",
+  "title": "창고 이전할 때 랙 체크 3가지",
+  "line": "철거 일정, 반출 동선, 매입 가능 여부를 먼저 확인하세요.",
+  "tag": "#창고이전",
+  "playlist": "랙반장의 창고 상식 (숏츠)",
+  "pin": "📌 체크해 보셨나요? 우리 창고 상황을 댓글로 남겨주세요!\n창고 사진 한 장이면 견적 드립니다.\n📞 010-4446-4302 (전화·문자 24시간)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-11-23",
+  "time": "오후 6:00",
   "key": "rbj17",
   "type": "short",
   "file": "rbj_17.mp4",
@@ -434,8 +499,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-22",
-  "time": "오후 12:00",
+  "date": "2026-11-23",
+  "time": "오후 9:00",
   "key": "rbj24",
   "type": "short",
   "file": "rbj_24.mp4",
@@ -447,8 +512,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-22",
-  "time": "오후 6:00",
+  "date": "2026-11-24",
+  "time": "오후 12:00",
   "key": "rbj04",
   "type": "short",
   "file": "rbj_04.mp4",
@@ -460,8 +525,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-22",
-  "time": "오후 9:00",
+  "date": "2026-11-24",
+  "time": "오후 6:00",
   "key": "rbj12",
   "type": "short",
   "file": "rbj_12.mp4",
@@ -473,8 +538,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-23",
-  "time": "오후 12:00",
+  "date": "2026-11-24",
+  "time": "오후 9:00",
   "key": "rbj18",
   "type": "short",
   "file": "rbj_18.mp4",
@@ -486,8 +551,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-23",
-  "time": "오후 6:00",
+  "date": "2026-11-25",
+  "time": "오후 12:00",
   "key": "rbj25",
   "type": "short",
   "file": "rbj_25.mp4",
@@ -499,8 +564,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-23",
-  "time": "오후 9:00",
+  "date": "2026-11-25",
+  "time": "오후 6:00",
   "key": "rbj05",
   "type": "short",
   "file": "rbj_05.mp4",
@@ -512,8 +577,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-24",
-  "time": "오후 12:00",
+  "date": "2026-11-25",
+  "time": "오후 9:00",
   "key": "rbj13",
   "type": "short",
   "file": "rbj_13.mp4",
@@ -525,8 +590,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-24",
-  "time": "오후 6:00",
+  "date": "2026-11-26",
+  "time": "오후 12:00",
   "key": "rbj19",
   "type": "short",
   "file": "rbj_19.mp4",
@@ -538,8 +603,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-24",
-  "time": "오후 9:00",
+  "date": "2026-11-26",
+  "time": "오후 6:00",
   "key": "rbj26",
   "type": "short",
   "file": "rbj_26.mp4",
@@ -551,8 +616,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-25",
-  "time": "오후 12:00",
+  "date": "2026-11-26",
+  "time": "오후 9:00",
   "key": "rbj06",
   "type": "short",
   "file": "rbj_06.mp4",
@@ -564,8 +629,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-25",
-  "time": "오후 6:00",
+  "date": "2026-11-27",
+  "time": "오후 12:00",
   "key": "rbj14",
   "type": "short",
   "file": "rbj_14.mp4",
@@ -577,8 +642,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-25",
-  "time": "오후 9:00",
+  "date": "2026-11-27",
+  "time": "오후 6:00",
   "key": "rbj20",
   "type": "short",
   "file": "rbj_20.mp4",
@@ -590,8 +655,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-26",
-  "time": "오후 12:00",
+  "date": "2026-11-27",
+  "time": "오후 9:00",
   "key": "rbj27",
   "type": "short",
   "file": "rbj_27.mp4",
@@ -603,8 +668,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-26",
-  "time": "오후 6:00",
+  "date": "2026-11-28",
+  "time": "오후 12:00",
   "key": "rbj07",
   "type": "short",
   "file": "rbj_07.mp4",
@@ -616,8 +681,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-26",
-  "time": "오후 9:00",
+  "date": "2026-11-28",
+  "time": "오후 6:00",
   "key": "rbj21",
   "type": "short",
   "file": "rbj_21.mp4",
@@ -629,8 +694,8 @@
   "uploaded": false
  },
  {
-  "date": "2026-11-27",
-  "time": "오후 12:00",
+  "date": "2026-11-28",
+  "time": "오후 9:00",
   "key": "wk02",
   "type": "short",
   "file": "wk_02.mp4",
@@ -639,6 +704,266 @@
   "tag": "#랙설치 #랙견적 #창고랙",
   "playlist": "성우 현장 숏츠",
   "pin": "📌 창고 사진 한 장이면 견적 드립니다!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-11-29",
+  "time": "오후 12:00",
+  "key": "sim0",
+  "type": "short",
+  "file": "sim0.mp4",
+  "title": "50평 창고에 랙을 넣으면? 3D로 보는 보관량 4배 #파렛트랙 #shorts",
+  "line": "바닥에만 쌓으면 40파렛트, 랙 4단이면 160파렛트. 같은 바닥에서 높이를 쓰면 이렇게 달라집니다. (예시 배치)",
+  "tag": "#파렛트랙 #창고정리 #3D시뮬레이션",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 우리 창고 가로·세로를 댓글로 남겨주세요! 몇 파렛트 들어갈지 알려드립니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-11-29",
+  "time": "오후 6:00",
+  "key": "tetris",
+  "type": "short",
+  "file": "tetris.mp4",
+  "title": "창고 테트리스, 빈칸 없이 꽉 채우기 #창고정리 #shorts",
+  "line": "파렛트가 랙 칸에 딱딱 들어가는 맛. 실제 창고 테트리스는 성우가 맞춰드립니다.",
+  "tag": "#창고정리 #파렛트랙 #테트리스",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 우리 창고는 지금 몇 칸 비어 있나요? 사진 보내주시면 배치 잡아드립니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-11-29",
+  "time": "오후 9:00",
+  "key": "chat0",
+  "type": "short",
+  "file": "chat0.mp4",
+  "title": "중고 랙, 정말 튼튼한가요? 상담톡으로 답해드립니다 #중고랙 #shorts",
+  "line": "A급 중고만 1차·2차 검수 후 출고, 파렛트랙 단당 1,500~3,000kg. 자주 받는 질문을 대화로 정리했습니다.",
+  "tag": "#중고랙 #중고파렛트랙 #랙상담",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 궁금한 점을 댓글로 남겨주세요. 상담톡처럼 바로 답해드립니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-11-30",
+  "time": "오후 12:00",
+  "key": "pov0",
+  "type": "short",
+  "file": "pov0.mp4",
+  "title": "지게차 운전석에서 본 랙 통로 #파렛트랙 #shorts",
+  "line": "통로 폭 3.2m, 4단 랙. 지게차 시점으로 성우가 세운 랙 통로를 달려봤습니다. (3D 연출)",
+  "tag": "#파렛트랙 #지게차 #물류창고",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 우리 창고 지게차 통로 폭, 알고 계신가요? 댓글로 남겨주세요!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-11-30",
+  "time": "오후 6:00",
+  "key": "quiz",
+  "type": "short",
+  "file": "quiz.mp4",
+  "title": "퀴즈! 파렛트랙 한 단은 몇 kg까지? #파렛트랙 #shorts",
+  "line": "A 300kg · B 1,000kg · C 최대 3,000kg. 댓글로 먼저 답해보세요!",
+  "tag": "#파렛트랙 #퀴즈 #랙하중",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 정답 맞히셨나요? A·B·C 댓글로 남겨주세요!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-11-30",
+  "time": "오후 9:00",
+  "key": "sim1",
+  "type": "short",
+  "file": "sim1.mp4",
+  "title": "금형·드럼·코일, 공장은 중량랙 3D 시뮬레이션 #중량랙 #shorts",
+  "line": "단당 500~1,000kg 중량랙. 바닥 하중까지 확인하고 배치합니다.",
+  "tag": "#중량랙 #공장랙 #3D시뮬레이션",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 공장에 쌓아둔 자재, 무게를 댓글로 알려주세요. 맞는 랙 추천드립니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-12-01",
+  "time": "오후 12:00",
+  "key": "load",
+  "type": "short",
+  "file": "load.mp4",
+  "title": "빔 한 단에 계속 올리면? 하중 실험 #랙하중 #shorts",
+  "line": "허용 하중 이내면 안전, 넘으면 빔 처짐 위험. 단당 허용 하중은 견적서에 명시해 드립니다. (시각화)",
+  "tag": "#랙하중 #파렛트랙 #창고안전",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 지금 랙에 얼마나 올리고 계신가요? 걱정되면 사진 보내주세요.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-12-01",
+  "time": "오후 6:00",
+  "key": "blueprint",
+  "type": "short",
+  "file": "blueprint.mp4",
+  "title": "설계도로 보는 파렛트랙 한 칸 #파렛트랙 #shorts",
+  "line": "기둥·빔·빔 래치·바닥 앵커·브레이싱. 랙 한 칸이 어떻게 생겼는지 도면으로 정리했습니다.",
+  "tag": "#파렛트랙 #랙구조 #창고랙",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 랙 부품 이름, 헷갈렸던 거 있나요? 댓글로 물어보세요!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-12-01",
+  "time": "오후 9:00",
+  "key": "chat1",
+  "type": "short",
+  "file": "chat1.mp4",
+  "title": "랙 견적, 뭐 보내면 돼요? #랙견적 #shorts",
+  "line": "창고 사진과 대략의 가로·세로만 보내주세요. 대구·경산은 방문 실측, 그 외 지역은 도면으로 배치합니다.",
+  "tag": "#랙견적 #창고랙 #랙설치",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 사진 한 장이면 견적 시작합니다. 카톡이나 문자로 보내주세요!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-12-02",
+  "time": "오후 12:00",
+  "key": "top3",
+  "type": "short",
+  "file": "top3.mp4",
+  "title": "랙 설치, 사장님들이 제일 많이 하는 실수 TOP3 #랙설치 #shorts",
+  "line": "3위 좁은 통로, 2위 바닥 앵커 생략, 1위 하중 확인 없는 적재. 처음부터 제대로 하세요.",
+  "tag": "#랙설치 #창고안전 #파렛트랙",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 여러분 창고는 몇 개 해당되나요? 댓글로 알려주세요!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-12-02",
+  "time": "오후 6:00",
+  "key": "pov1",
+  "type": "short",
+  "file": "pov1.mp4",
+  "title": "통로 2.4m vs 3.2m, 지게차가 돌 수 있을까? #물류창고 #shorts",
+  "line": "통로 폭이 모자라면 회전 반경이 안 나옵니다. 성우는 지게차 회전 반경까지 계산해서 배치합니다. (3D 연출)",
+  "tag": "#물류창고 #지게차 #랙설치",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 우리 지게차 기종을 댓글로 남겨주세요. 필요한 통로 폭 알려드립니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-12-02",
+  "time": "오후 9:00",
+  "key": "swipe",
+  "type": "short",
+  "file": "swipe.mp4",
+  "title": "이 랙, 계속 써도 될까? OK vs 교체 #중고랙 #shorts",
+  "line": "기둥 휨, 안전핀, 용접부 녹, 바닥 앵커. 하나씩 판정해봤습니다.",
+  "tag": "#중고랙 #랙점검 #창고안전",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 우리 창고 랙도 판정받고 싶다면 사진 보내주세요!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-12-03",
+  "time": "오후 12:00",
+  "key": "sim2",
+  "type": "short",
+  "file": "sim2.mp4",
+  "title": "작은 방도 경량랙이면 넓어집니다 #경량랙 #shorts",
+  "line": "4.4m × 4m 보관실에 경량랙을 세우면 선반 칸이 이렇게 늘어납니다. (예시 배치)",
+  "tag": "#경량랙 #창고정리 #3D시뮬레이션",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 좁은 보관실 사진 보내주시면 선반 배치 잡아드립니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-12-03",
+  "time": "오후 6:00",
+  "key": "calc",
+  "type": "short",
+  "file": "calc.mp4",
+  "title": "우리 창고엔 파렛트 몇 개? 보관량 계산기 #파렛트랙 #shorts",
+  "line": "가로 20m · 세로 12m · 천장 8m 예시 계산 결과 약 280파렛트. 정확한 숫자는 실측으로 확정합니다.",
+  "tag": "#파렛트랙 #창고계산 #물류창고",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 우리 창고 가로·세로·천장 높이를 댓글로 남겨주세요. 계산해 드립니다!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-12-03",
+  "time": "오후 9:00",
+  "key": "timelapse",
+  "type": "short",
+  "file": "timelapse.mp4",
+  "title": "아침 8시 빈 창고, 저녁엔? 당일 설치 타임랩스 #랙설치 #shorts",
+  "line": "자재 도착부터 기둥·빔·앵커·점검까지 하루. 조립과 마무리는 저희가, 물건만 올리세요. (3D 연출)",
+  "tag": "#랙설치 #당일설치 #파렛트랙",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 설치 희망일을 댓글이나 문자로 알려주세요. 일정 맞춰드립니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-12-04",
+  "time": "오후 12:00",
+  "key": "diary",
+  "type": "short",
+  "file": "diary.mp4",
+  "title": "10년 쓴 랙이 남긴 일기 #중고랙 #shorts",
+  "line": "고철이 될 뻔한 랙이 1차·2차 검수를 받고 새 창고에서 다시 일하기까지.",
+  "tag": "#중고랙 #중고파렛트랙 #랙매입",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 쓰던 랙, 버리기 전에 사진 먼저 보내주세요. 매입가 알려드립니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-12-04",
+  "time": "오후 6:00",
+  "key": "pov2",
+  "type": "short",
+  "file": "pov2.mp4",
+  "title": "랙 꼭대기 8m에서 내려다본 창고 #파렛트랙 #shorts",
+  "line": "1단 1.6m부터 4단 6.4m까지. 바닥은 그대로, 보관은 위로. (3D 연출)",
+  "tag": "#파렛트랙 #물류창고 #3D",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 우리 창고 천장 높이는 몇 m인가요? 댓글로 남겨주세요!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-12-04",
+  "time": "오후 9:00",
+  "key": "chat2",
+  "type": "short",
+  "file": "chat2.mp4",
+  "title": "쓰던 랙, 팔 수 있나요? #랙매입 #shorts",
+  "line": "사진·수량으로 1차 매입가, 철거·반출 함께, 매입 제품은 현장 정산. 자주 받는 질문을 대화로 정리했습니다.",
+  "tag": "#랙매입 #랙철거 #중고랙매입",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 쓰던 랙, 사진 몇 장이면 매입가 먼저 알려드립니다!\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-12-05",
+  "time": "오후 12:00",
+  "key": "asmr",
+  "type": "short",
+  "file": "asmr.mp4",
+  "title": "빔이 기둥에 걸리는 순간, 딸깍 #파렛트랙 #shorts",
+  "line": "빔 체결부터 안전핀까지. 보이지 않는 곳까지 꼼꼼하게 확인합니다.",
+  "tag": "#파렛트랙 #ASMR #랙설치",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 이 소리 좋아하시는 분? 댓글로 알려주세요 ㅎㅎ\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
+  "uploaded": false
+ },
+ {
+  "date": "2026-12-05",
+  "time": "오후 6:00",
+  "key": "sim3",
+  "type": "short",
+  "file": "sim3.mp4",
+  "title": "창고 비울 때, 랙은 이렇게 나갑니다 #랙철거 #shorts",
+  "line": "사진 견적 → 해체 → 반출 → 현장 정산. 이전·증설·폐업으로 남는 랙, 고철값에 넘기지 마세요.",
+  "tag": "#랙철거 #랙매입 #중고랙",
+  "playlist": "성우 현장 숏츠",
+  "pin": "📌 철거 예정 일정과 수량을 문자로 보내주세요. 1차 견적 드립니다.\n📞 전화·문자 010-4446-4302 (24시간 상담)\n💬 카톡 상담 https://open.kakao.com/o/sPpUBNOi",
   "uploaded": false
  }
 ]
