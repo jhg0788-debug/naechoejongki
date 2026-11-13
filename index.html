@@ -552,12 +552,12 @@ function render(){
     const ns=items.map(nums),wt=ns.reduce((a,b)=>a+b.t,0),wd=ns.reduce((a,b)=>a+Math.min(b.d,b.t),0),wo=ns.filter(n=>n.d<n.t),wdg=ns.filter(n=>n.s==="danger"),left=wLeft();
     $("#summary").innerHTML=`
     <div class="stat"><b>${wt?Math.round(wd/wt*100):100}%</b><small>${wk+1}주차 ${wd}/${wt}건</small></div>
-    <div class="stat ${wdg.length?"warn":""}"><b>${wo.reduce((a,b)=>a+b.t-b.d,0)}</b><small>이번 주 남은 건수${wdg.length?` · 위험 ${wdg.length}`:""}</small></div>
+    <div class="stat ${wdg.length?"warn":""}"><b>${wo.reduce((a,b)=>a+b.t-b.d,0)}</b><small>이번 주 남은 건수${wdg.length?` · 급한 것 ${wdg.length}`:""}</small></div>
     <div class="stat today"><b>${tsum>=0?"+":""}${tsum}</b><small>오늘 처리</small></div>
     <div class="stat"><b>${left}일</b><small>주말까지 평일 · 월 ${pct}%</small></div>`;
   }else $("#summary").innerHTML=`
     <div class="stat"><b>${pct}%</b><small>전체 ${dn}/${tgt}건</small></div>
-    <div class="stat ${danger.length?"warn":""}"><b>${open.length}</b><small>미완료${danger.length?` · 위험 ${danger.length}`:""}</small></div>
+    <div class="stat ${danger.length?"warn":""}"><b>${open.length}</b><small>미완료${danger.length?` · 급한 것 ${danger.length}`:""}</small></div>
     <div class="stat today"><b>${tsum>=0?"+":""}${tsum}</b><small>오늘 처리</small></div>
     <div class="stat"><b>${dl<0?"마감":dl>40?"-":"D-"+dl}</b><small>월말까지</small></div>`;
   if(!makerDefaulted&&loaded&&isMaker(me)){makerDefaulted=true;if(view==="ch")view="make"}
@@ -620,7 +620,7 @@ function rowHtml(it,td,compact){
   const ok=logs.filter(l=>l.item===it.id&&l.reviewed&&!l.voided).length;
   let pill=s==="free"?`<span class="pill p-free">이번 주 여유</span>`:s==="done"?`<span class="pill p-done">${wkM?"주간 완료":"완료"}</span>`:"";
   if(s!=="done"&&s!=="free"&&d!==null)pill=`<span class="pill ${d<0?"p-danger":d<=3?"p-wait":"p-done"}">${d<0?"기한 지남":d===0?"오늘 마감":"D-"+d}</span>`;
-  else if(s==="danger")pill=`<span class="pill p-danger">위험</span>`;
+  else if(s==="danger")pill=`<span class="pill p-danger">조금 급해요</span>`;
   if(it.waiting&&n.d<n.t)pill=`<span class="pill p-hold">⏸ 자료 대기</span>`;
   const own=isStaff(it.owner)?`<span class="pill p-free">${esc(nick(it.owner))}</span>`:"";
   const tp=(t?`<span class="pill p-today">오늘 ${t>0?"+":""}${t}</span>`:"")+own;
@@ -634,7 +634,7 @@ function rowHtml(it,td,compact){
     <label for="dl-${it.id}">마감일</label><input id="dl-${it.id}" type="date" value="${esc(it.deadline||"")}">
     <label for="mm-${it.id}">메모</label><input id="mm-${it.id}" placeholder="예: 사장님 사진 대기 중" value="${esc(it.memo||"")}">
     <label for="ow-${it.id}">담당</label><select id="ow-${it.id}"><option value="">미지정</option>${STAFF.map(([x])=>`<option value="${x}" ${it.owner===x?"selected":""}>${esc(nick(x))} (${x})</option>`).join("")}</select>
-    <label for="wt-${it.id}">자료 대기</label><label class="toggle"><input type="checkbox" id="wt-${it.id}" ${it.waiting?"checked":""}> 업체 자료를 기다리는 중 (위험 표시에서 빠져요)</label>
+    <label for="wt-${it.id}">자료 대기</label><label class="toggle"><input type="checkbox" id="wt-${it.id}" ${it.waiting?"checked":""}> 업체 자료를 기다리는 중 (급한 것 표시에서 빠져요)</label>
     <div class="full"><button class="btn primary" data-act="saveitem" data-id="${it.id}">저장</button>
     <span>대표 확인 ${ok}/${it.done}${it.by?` · 마지막 ${esc(it.by)}`:""}</span>
     ${delId===it.id?`<button class="btn danger" data-act="delyes" data-id="${it.id}">정말 삭제</button><button class="btn" data-act="delno">취소</button>`:`<button class="btn danger" data-act="del" data-id="${it.id}">삭제</button>`}</div></div>`;
